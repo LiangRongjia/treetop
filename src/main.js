@@ -5,13 +5,17 @@ import App from './App'
 import router from './router'
 
 // 引入 ElementUI
-// 若报 semi Extra semicolon 错，即不能以分号结尾
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)
+
+Vue.prototype._GLOBAL = {
+  userID: 1,
+  projectID: 1
+}
 
 /* eslint-disable no-new */
 new Vue({
