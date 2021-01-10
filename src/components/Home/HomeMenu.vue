@@ -29,7 +29,14 @@
             :key="item.ID">
             {{item.name}}
           </el-menu-item>
+					
         </el-submenu>
+				<el-menu-item
+						:index="'newProject'"
+						@click="toNewProject('newProject')"
+						:key="'newProject'">
+					  + 创建/加入项目
+					</el-menu-item>
       </el-menu>
     </aside>
 </template>
@@ -87,7 +94,10 @@ export default {
     // 进入某工作页面
     toMyJob (path) {
       this.$router.push('/' + this.userName + '/' + path)
-    }
+    },
+		toNewProject (path) {
+			this.$router.push('/' + this.userName + '/' + path)
+		}
   }
 }
 </script>
