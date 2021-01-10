@@ -5,7 +5,7 @@
 			<el-card shadow="never">
 				<div slot="header">基本信息</div>
 				<p>项目名称 : {{name}}</p><br />
-				<p>项目负责人 : {{name}}</p><br />
+				<p>项目负责人 : {{host_name}}</p><br />
 				<p>项目开始时间 : {{start}}</p><br />
 				<p>项目结束时间 : {{end}}</p>
 			</el-card>
@@ -22,6 +22,7 @@
 		name: 'SprintInfo',
 		props: [
 			'name',
+			'host_name',
 			'start',
 			'end',
 			'description'

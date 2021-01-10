@@ -5,6 +5,7 @@ import Login from '@/components/Login'
 import Home from '@/components/Home/Home'
 import MyTask from '@/components/Home/MyTask'
 import MyMessage from '@/components/Home/MyMessage'
+import NewProject from '@/components/Home/NewProject/NewProject'
 import Project from '@/components/Home/Project/Project'
 
 // 解决路由导航冗余报错(路由重复)
@@ -46,10 +47,14 @@ export default new Router({
           path: 'my-message',
           component: MyMessage
         },
+				{
+					path: 'newProject',
+					component: NewProject
+				},
         {
           path: ':projectName',
           component: Project
-        }
+        },
       ]
     },
     {
