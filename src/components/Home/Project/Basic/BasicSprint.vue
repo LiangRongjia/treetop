@@ -1,18 +1,18 @@
 <template>
 	<div>
 		<el-card>
-			<div slot="header">迭代概览</div>
+			<div slot="header">Sprint</div>
 			<div class="card-content">
 				<el-card shadow="never">
-					<div slot="header">当前迭代次数</div>
+					<div slot="header">Current sprint</div>
 					<p>{{num}}</p><br />
 				</el-card>
 				<el-card shadow="never">
-					<div slot="header">当前迭代状态</div>
+					<div slot="header">Current sprint status</div>
 					<p>{{state}}</p>
 				</el-card>
 				<el-card shadow="never">
-					<div slot="header">当前迭代倒计时</div>
+					<div slot="header">Before the end of current iteration</div>
 					<p>{{time}}</p>
 				</el-card>
 			</div>

@@ -1,10 +1,10 @@
 <template>
 	<div>
 		<el-tabs v-model="tab" type="card">
-			<el-tab-pane label="创建项目" name="create">
+			<el-tab-pane label="Create Project" name="create">
 				<create />
 			</el-tab-pane>
-			<el-tab-pane label="加入项目" name="add">
+			<el-tab-pane label=" Join Project" name="add">
 				<add />
 			</el-tab-pane>
 		</el-tabs>

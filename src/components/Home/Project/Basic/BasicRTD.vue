@@ -3,7 +3,7 @@
 		<el-row :gutter="20">
 			<el-col :span="12">
 				<el-card>
-					<div slot="header">项目进度</div>
+					<div slot="header">Progress</div>
 					<el-row :gutter="20">
 						<el-col :span="12">
 							<el-card class="chart" shadow="never">
@@ -11,18 +11,18 @@
 							</el-card>
 						</el-col>
 						<el-col :span="8" :offset="2">
-							<p>事务总数 : {{name}}</p><br />
-							<p>未开始 : {{name}}</p><br />
-							<p>进行中 : {{start}}</p><br />
-							<p>已完成 : {{start}}</p><br />
-							<p>延期 : {{end}}</p>
+							<p>All : {{name}}</p><br />
+							<p>Pending : {{name}}</p><br />
+							<p>In progress : {{start}}</p><br />
+							<p>Completed : {{start}}</p><br />
+							<p>Delay : {{end}}</p>
 						</el-col>
 					</el-row>
 				</el-card>
 			</el-col>
 			<el-col :span="12">
 				<el-card>
-					<div slot="header">事务分布</div>
+					<div slot="header">Project distribution</div>
 					<el-card class="chart" shadow="never">
 						<div>[EChart饼图，需求、任务、缺陷]</div>
 					</el-card>

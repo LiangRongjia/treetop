@@ -26,7 +26,7 @@
 						:index="'newProject'"
 						@click="toNewProject('newProject')"
 						:key="'newProject'">
-					  + 创建/加入项目
+					  + Create / join project
 					</el-menu-item>
       </el-menu>
     </aside>
