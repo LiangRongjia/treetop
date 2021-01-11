@@ -23,13 +23,14 @@
       <h1>Name</h1>
       <el-input v-model="newMyInfo.name"></el-input>
       <h1>Password</h1>
-      <el-input v-model="newMyInfo.password"></el-input>
+      <el-input v-model="newMyInfo.password" type="password"></el-input>
       <h1>Avatar</h1>
-      <img :src="MyInfo.avatar">
-      <el-upload>
-        <el-button size="small"
-        type="primary"
-        :fileList="fileList">点击上传</el-button>
+      <el-upload
+        class="avatar-uploader"
+        action="https://jsonplaceholder.typicode.com/posts/"
+        :show-file-list="false">
+        <img v-if="imageUrl" :src="imageUrl" class="avatar">
+        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
       </el-upload>
       <div slot="footer" class="dialog-footer">
         <el-button @click="isMyInfoEditting = false">取消</el-button>
@@ -45,7 +46,7 @@ export default {
   data () {
     return {
       isMyInfoEditting: false,
-      fileList:[],
+      imageUrl: '',
       MyInfo: {
         ID: this._GLOBAL.userObj.ID,
         name: this._GLOBAL.userObj.name,
@@ -95,5 +96,28 @@ export default {
   margin-top: -8px;
   margin-right: 12px;
   padding: 10px;
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 100px;
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
 }
 </style>
