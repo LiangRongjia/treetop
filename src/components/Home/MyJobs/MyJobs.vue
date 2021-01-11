@@ -18,41 +18,44 @@
 <script>
 import ListCard from './ListCard.vue'
 export default {
-  name: 'MyJobs',
+  title: 'MyJobs',
   components: {
     'list-card':ListCard
   },
   data () {
     return {
-      requiresFields: [ 'name', 'state', 'description' ],
-      tasksFields: [ 'name', 'state', 'host', 'description' ],
-      defectsFields: ['name', 'state', 'description'],
-      meetingsFields: ['type', 'date', 'description', 'attachment'],
+      requiresFields: [ 'projectName', 'title', 'state', 'description' ],
+      tasksFields: [ 'projectName', 'title', 'state', 'host', 'description' ],
+      defectsFields: [ 'projectName', 'title', 'state', 'description'],
       requires: [
         {
+          projectName: 1,
           ID: 1,
-          name: 'require1',
+          title: 'require1',
           state: 'done',
           desciption: 'require1 description'
         },
         {
+          projectName: 1,
           ID: 3,
-          name: 'require3',
+          title: 'require3',
           state: 'done',
           desciption: 'require3 description'
         }
       ],
       tasks: [
         {
+          projectName: 1,
           ID: 1,
-          name: 'task1',
+          title: 'task1',
           state: 'done',
           host: 'liangrongjia',
           desciption: 'task1 description'
         },
         {
+          projectName: 1,
           ID: 3,
-          name: 'task2',
+          title: 'task2',
           state: 'done',
           host: 'liangrongjia',
           desciption: 'task2 description'
@@ -60,8 +63,9 @@ export default {
       ],
       defects: [
         {
+          projectName: 1,
           ID: 3,
-          name: 'defect2',
+          title: 'defect2',
           state: 'done',
           desciption: 'defect2 description'
         }

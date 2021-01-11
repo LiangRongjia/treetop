@@ -4,12 +4,12 @@
       <el-option
         v-for="(item, index) in sprintsList"
         :key="index"
-        :label="index + 1 + ' : ' + item.name"
+        :label="index + 1 + ' : ' + item.title"
         :value="index">
       </el-option>
     </el-select>
     <sprint-info class="sprint__card"
-      :name="sprint.name"
+      :title="sprint.title"
       :start="sprint.start"
       :end="sprint.end"
       :description="sprint.description"/>
@@ -58,7 +58,7 @@ import Meetings from './Meetings.vue'
  * 当前项目名从路径(或全局变量？])获取
  */
 export default{
-  name: 'ProjectSprint',
+  title: 'ProjectSprint',
   components: {
     'list-card': ListCard,
     'sprint-info': SprintInfo,
@@ -78,31 +78,31 @@ export default{
         attachment: '',
       },
       sprintsList: [
-        { ID: 1, name: 'firstSprint' },
-        { ID: 2, name: 'secondSprint' }
+        { ID: 1, title: 'firstSprint' },
+        { ID: 2, title: 'secondSprint' }
       ],
       sprintIndex: 0,
       sprint: {
         ID: 1,
-        name: 'firstSprint',
+        title: 'firstSprint',
         description: 'firstSprint\'s description',
         start: '2020/12/27',
         end: '2020/12/28'
       },
-      requiresFields: [ 'name', 'state', 'description' ],
-      tasksFields: [ 'name', 'state', 'host', 'description' ],
-      defectsFields: ['name', 'state', 'description'],
+      requiresFields: [ 'title', 'state', 'description' ],
+      tasksFields: [ 'title', 'state', 'host', 'description' ],
+      defectsFields: ['title', 'state', 'description'],
       meetingsFields: ['type', 'date', 'description', 'attachment'],
       requires: [
         {
           ID: 1,
-          name: 'require1',
+          title: 'require1',
           state: 'done',
           desciption: 'require1 description'
         },
         {
           ID: 3,
-          name: 'require3',
+          title: 'require3',
           state: 'done',
           desciption: 'require3 description'
         }
@@ -110,14 +110,14 @@ export default{
       tasks: [
         {
           ID: 1,
-          name: 'task1',
+          title: 'task1',
           state: 'done',
           host: 'liangrongjia',
           desciption: 'task1 description'
         },
         {
           ID: 3,
-          name: 'task2',
+          title: 'task2',
           state: 'done',
           host: 'liangrongjia',
           desciption: 'task2 description'
@@ -126,7 +126,7 @@ export default{
       defects: [
         {
           ID: 3,
-          name: 'defect2',
+          title: 'defect2',
           state: 'done',
           desciption: 'defect2 description'
         }

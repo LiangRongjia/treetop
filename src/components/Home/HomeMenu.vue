@@ -2,12 +2,15 @@
     <aside>
       <div class="user-info">
         <div>
-          <el-avatar icon="el-icon-user-solid"></el-avatar>
+          <el-avatar :src="avatarURL"></el-avatar>
           <p class="user-info__name">{{userName}}</p>
         </div>
       </div>
-      <el-menu ref="home-menu" class="menu" :default-active="projectsList[0].ID + ''"
+      <el-menu ref="home-menu" class="menu" default-active="my-jobs"
         :default-openeds="['myJob', 'myProjects']">
+        <el-menu-item index="my-info" @click="toMyInfo('my-info')">
+          <span>MY INFO</span>
+        </el-menu-item>
         <el-menu-item index="my-jobs" @click="toMyJobs('my-jobs')">
           <span>MY JOBS</span>
         </el-menu-item>
@@ -26,7 +29,7 @@
 						:index="'newProject'"
 						@click="toNewProject('newProject')"
 						:key="'newProject'">
-					  + Create / join project
+					  + 创建/加入项目
 					</el-menu-item>
       </el-menu>
     </aside>
@@ -47,11 +50,12 @@
 export default {
   name: 'HomeMenu',
   props: [
-    'userID'
+    'userID',
+    'userName'
   ],
   data () {
     return {
-      userName: 'liangrongjia',
+      avatarURL: this._GLOBAL.imgBaseUrl + this._GLOBAL.userObj.avatar,
       myJobs: [
         { text: 'My Task', path: 'my-task' },
         { text: 'My Message', path: 'my-message' }
@@ -70,11 +74,7 @@ export default {
     }
   },
   mounted () {
-    // 维护路径 this.$route.params.projectName
-    // 首次进入主页，显示第一个项目
-    if (this.projectsList.length !== 0) {
-      this.$router.replace('/' + this.userName + '/' + this.projectsList[0].name)
-    }
+    this.$router.replace('/' + this.userName + '/my-jobs')
   },
   methods: {
     // 维护路径 this.$route.params.projectName
@@ -85,6 +85,10 @@ export default {
     // 进入某工作页面
     toMyJobs (path) {
       this.$router.push('/' + this.userName + '/' + path)
+    },
+    // 进入我的信息页面
+    toMyInfo (path) {
+			this.$router.push('/' + this.userName + '/' + path)
     },
 		toNewProject (path) {
 			this.$router.push('/' + this.userName + '/' + path)
