@@ -10,7 +10,7 @@
       <el-tab-pane label="Require" name="require">
         <project-require :projectID="projectID"/>
       </el-tab-pane>
-      <el-tab-pane label="Task" name="progress">
+      <el-tab-pane label="Progress" name="progress">
         <project-progress :projectID="projectID"/>
       </el-tab-pane>
       <el-tab-pane label="Defect" name="defect">
