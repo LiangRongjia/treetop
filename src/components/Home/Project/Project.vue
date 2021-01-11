@@ -50,7 +50,6 @@ export default{
     // 若路由路径变化，从全局变量刷新 projectID
     $route () {
       this.projectID = this._GLOBAL.projectID
-      console.log(this.projectID)
     }
   }
 }

@@ -8,17 +8,9 @@
       </div>
       <el-menu ref="home-menu" class="menu" :default-active="projectsList[0].ID + ''"
         :default-openeds="['myJob', 'myProjects']">
-        <el-submenu index="myJob">
-          <template slot="title">
-            <span>MY JOB</span>
-          </template>
-          <el-menu-item v-for="item in myJobs"
-            :index="item.path"
-            @click="toMyJob(item.path)"
-            :key="item.path">
-            {{item.text}}
-          </el-menu-item>
-        </el-submenu>
+        <el-menu-item index="my-jobs" @click="toMyJobs('my-jobs')">
+          <span>MY JOBS</span>
+        </el-menu-item>
         <el-submenu index="myProjects">
           <template slot="title">
             <span>MY PROJECTS</span>
@@ -29,7 +21,6 @@
             :key="item.ID">
             {{item.name}}
           </el-menu-item>
-					
         </el-submenu>
 				<el-menu-item
 						:index="'newProject'"
@@ -92,7 +83,7 @@ export default {
       this.$router.push('/' + this.userName + '/' + project.name)
     },
     // 进入某工作页面
-    toMyJob (path) {
+    toMyJobs (path) {
       this.$router.push('/' + this.userName + '/' + path)
     },
 		toNewProject (path) {

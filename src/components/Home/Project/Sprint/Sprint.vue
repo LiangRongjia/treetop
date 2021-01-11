@@ -14,7 +14,7 @@
       :end="sprint.end"
       :description="sprint.description"/>
     <list-card class="sprint__card"
-      title="Require"
+      title="Requires"
       @add="addRequires"
       :data="requires"
       :fields="requiresFields"/>
@@ -28,7 +28,26 @@
       @add="addDefects"
       :data="defects"
       :fields="defectsFields"/>
-    <meetings class="sprint__card"/>
+    <meetings class="sprint__card"
+      @addMeeting="addMeeting"
+      :data="meetings"
+      :fields="meetingsFields"/>
+    <el-dialog class="sprint__add-meeting-dialog" title="Add Meeting"
+      :visible.sync="isAddMeeting"
+      :modal="false">
+      <h1>Type</h1>
+      <el-input v-model="newMeeting.type" placeholder="请输入内容"></el-input>
+      <h1>Date</h1>
+      <el-date-picker v-model="newMeeting.date" type="date"/>
+      <h1>Description</h1>
+      <el-input v-model="newMeeting.description" type="textarea" placeholder="请输入内容"></el-input>
+      <h1>Attachment</h1>
+      <p>{{newMeeting.attachment}}</p>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="isAddMeeting = false">取消</el-button>
+        <el-button type="primary" @click="isAddMeeting = false">确定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -51,6 +70,13 @@ export default{
   ],
   data () {
     return {
+      isAddMeeting: false,
+      newMeeting:{
+        type: '',
+        date: '',
+        description: '',
+        attachment: '',
+      },
       sprintsList: [
         { ID: 1, name: 'firstSprint' },
         { ID: 2, name: 'secondSprint' }
@@ -66,6 +92,7 @@ export default{
       requiresFields: [ 'name', 'state', 'description' ],
       tasksFields: [ 'name', 'state', 'host', 'description' ],
       defectsFields: ['name', 'state', 'description'],
+      meetingsFields: ['type', 'date', 'description', 'attachment'],
       requires: [
         {
           ID: 1,
@@ -103,6 +130,22 @@ export default{
           state: 'done',
           desciption: 'defect2 description'
         }
+      ],
+      meetings: [
+        {
+        ID: 1,
+        type: "Require",
+        description: 'Description of meetings 1',
+        date: '2020.12.09',
+        attachment: 'attachment'
+        },
+        {
+          ID: 2,
+          type: "Require",
+          description: 'Description of meetings 2',
+          date: '2020.12.09',
+          attachment: 'attachment'
+        }
       ]
     }
   },
@@ -127,6 +170,9 @@ export default{
     },
     addDefects () {
       this.$alert('Add a defect', 'dialog', { confirmButtonText: 'OK' })
+    },
+    addMeeting () {
+      this.isAddMeeting = true
     }
   }
 }
@@ -135,5 +181,9 @@ export default{
 <style>
 .sprint__card{
   margin: 0px 24px 24px 24px;
+}
+.sprint__add-meeting-dialog h1{
+  font-size: 18px;
+  padding: 12px 0px;
 }
 </style>
