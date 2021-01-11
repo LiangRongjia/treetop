@@ -1,11 +1,11 @@
 <template>
 	<div>
 		<el-form :inline="true" :model="formInline" class="demo-form-inline">
-			<el-form-item label="项目ID">
-				<el-input v-model="formInline.projectid" placeholder="请输入项目ID"></el-input>
+			<el-form-item label="Project ID">
+				<el-input v-model="formInline.projectid" placeholder="Please enter Project ID"></el-input>
 			</el-form-item>
 			<el-form-item>
-				<el-button type="primary" @click="onSubmit">申请加入</el-button>
+				<el-button type="primary" @click="onSubmit">Apply to join</el-button>
 			</el-form-item>
 		</el-form>
 	</div>
