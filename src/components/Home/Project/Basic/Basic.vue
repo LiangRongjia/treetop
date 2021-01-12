@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<basic-info class="basic__card" :name="basic.name" :host_name="basic.host_name" :start="basic.start" :end="basic.end" :description="basic.description" />
+		<basic-info class="basic__card" :name="basic.name" :host_name="basic.host_name" :start="basic.start" :end="basic.end" :description="basic.description" :state="basic.state"/>
 		<basic-sprint class="basic__card" />
 		<basic-rtd class="basic__card" />
 	</div>
@@ -26,23 +26,40 @@
 		data() {
 			return {
 				basic: {
-					ID: 1,
-					name: '测试项目',
-					host_name: '项目负责人',
-					description: '用于添加各类测试',
-					start: '2020/12/27',
-					end: '2020/12/28'
+					name: this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].name,
+					host_name: this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].host_ID,
+					description: this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].description,
+					start: this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].startDate,
+					end: this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].endDate,
+					state: this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].state,
 				},
 			}
 		},
 		watch: {
 			// 若 projectID 变更，更新页面
 			projectID(to, from) {
-				// update
-				
+				this.basic.name = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].name;
+				this.basic.host_name = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].host_ID;
+				this.basic.description = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].description;
+				this.basic.start = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].startDate;
+				this.basic.end = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].endDate;
+				this.basic.state = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].state;
 			}
 		},
+		created:function(){
+			this.func();
+			
+		},
 		methods: {
+			func() {
+				this.basic.name = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].name;
+				this.basic.host_name = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].host_ID;
+				this.basic.description = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].description;
+				this.basic.start = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].startDate;
+				this.basic.end = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].endDate;
+				this.basic.state = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].state;
+			}
+			
 // 			addRequires() {
 // 				this.$alert('Add a require', 'dialog', {
 // 					confirmButtonText: 'OK'

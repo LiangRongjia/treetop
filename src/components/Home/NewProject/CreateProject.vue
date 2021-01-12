@@ -59,18 +59,18 @@
 						message: '请选择项目结束时间',
 						trigger: 'change'
 					}],
-// 					date1: [{
-// 						type: 'date',
-// 						required: true,
-// 						message: '请选择项目开始时间',
-// 						trigger: 'change'
-// 					}],
-// 					date2: [{
-// 						type: 'date',
-// 						required: true,
-// 						message: '请选择项目结束时间',
-// 						trigger: 'change'
-// 					}],
+					// 					date1: [{
+					// 						type: 'date',
+					// 						required: true,
+					// 						message: '请选择项目开始时间',
+					// 						trigger: 'change'
+					// 					}],
+					// 					date2: [{
+					// 						type: 'date',
+					// 						required: true,
+					// 						message: '请选择项目结束时间',
+					// 						trigger: 'change'
+					// 					}],
 					desc: [{
 						required: false,
 						message: '请填写项目描述',
@@ -84,8 +84,35 @@
 			submitForm(formName) {
 				this.$refs[formName].validate((valid) => {
 					if (valid) {
-						alert('Create successfully!');
-						console.log(this.ruleForm.datavalue[0]);
+						this.axios.post('/api/project/createProject', {
+								"name": this.ruleForm.name,
+								"description": this.ruleForm.desc,
+								"startDate": this.ruleForm.datavalue[0],
+								"endDate": this.ruleForm.datavalue[1],
+								"state": "Pending",
+								"hostID": this._GLOBAL.userID
+							}, {
+								emulateJSON: true
+							})
+							.then((response) => {
+								if (response.data.message == '成功') {
+									alert('Create successfully!');
+								}
+								// 获取所有项目
+								this.axios.get('http://39.97.175.119:8801/project/getPrjListByUID', {
+										params: {
+											UID: this._GLOBAL.userObj.ID
+										}
+									})
+									.then((response) => {
+										console.log(response);
+										if (response.data.message == '成功') {
+											this._GLOBAL.ProjectList = response.data.data.prjList;
+											this.$eventBus.$emit('add',this.todoList);
+										}
+									})
+							})
+						//console.log(this.ruleForm.datavalue[0]);
 					} else {
 						console.log('error submit!!');
 						return false;

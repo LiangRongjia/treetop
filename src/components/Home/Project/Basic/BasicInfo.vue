@@ -9,7 +9,7 @@
 				<el-card shadow="never">
 					<div slot="header">Basic</div>
 					<p>Name : {{name}}</p><br />
-					<p>Leader : {{host_name}}</p><br />
+					<p>Leader : </p><br />
 					<p>Start : {{start}}</p><br />
 					<p>End : {{end}}</p><br />
 					<p>Current Status : {{state}}</p>
@@ -53,13 +53,14 @@
 
 <script>
 	export default {
-		name: 'BasicInfo',
+		//name: 'BasicInfo',
 		props: [
 			'name',
 			'host_name',
 			'start',
 			'end',
-			'description'
+			'description',
+			'state'
 		],
 		data() {
 			return {
@@ -74,6 +75,14 @@
 				},
 				formLabelWidth: '120px',
 			}
+		},
+		created:function(){
+			this.name = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].name;
+			this.host_name = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].host_ID;
+			this.description = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].description;
+			this.start = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].startDate;
+			this.end = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].endDate;
+			this.state = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].state;
 		},
 		methods: {
 			handleClose(done) {

@@ -21,6 +21,15 @@
 </template>
 
 <script>
+	export default {
+		data() {
+			return {
+				num: 0,
+				state: '',
+				time: 0,
+			}
+		}
+	}
 </script>
 
 <style scoped>

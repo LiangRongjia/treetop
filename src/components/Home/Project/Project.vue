@@ -44,13 +44,13 @@ export default{
   data () {
     return {
       tab: 'basic',
-      projectID: ''
+      projectID: this._GLOBAL.projectIndex
     }
   },
   watch: {
     // 若路由路径变化，从全局变量刷新 projectID
     $route () {
-      this.projectID = this._GLOBAL.projectID
+      this.projectID = this._GLOBAL.projectIndex;
     }
   }
 }
