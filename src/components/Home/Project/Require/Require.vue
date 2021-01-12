@@ -1,10 +1,8 @@
 <template>
   <div>
-    <el-button type="text" id="new_task">
-      <i class="el-icon-circle-plus-outline"></i>新建
-    </el-button>
+    <el-button type="text" id="new_reqt" style="margin-left:1100px" @click="isCreate=1">+ New</el-button>
     <el-card class="reqt_card">
-      <el-table :data="reqtList" style="width: 100% ; height: 100%" @row-click="change">
+      <el-table :data="reqtList" style="width: 100% " max-height="560px" @row-click="change">
         <el-table-column type="index" width="50"></el-table-column>
         <el-table-column
           prop="priority"
@@ -16,7 +14,7 @@
           filter-placement="bottom-end"
         >
           <template slot-scope="scope">
-            <el-tag :type="pri" disable-transitions>{{scope.row.priority}}</el-tag>
+            <el-tag :type="pri(scope.row.priority)" disable-transitions>{{scope.row.priority}}</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="title" label="标题" width="180" align="center"></el-table-column>
@@ -33,15 +31,15 @@
           column-key="date"
         ></el-table-column>
         <el-table-column prop="description" label="需求描述" width="200" align="center"></el-table-column>
+        <el-table-column fixed="right" label="任务列表" width="100" align="center">
+          <template slot-scope="scope">
+            <el-button @click="showTaskList(scope.row.ID)" type="text" size="small">查看</el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </el-card>
 
-    <el-card class="form_card" v-if="isForm">
-      <i
-        class="el-icon-close"
-        style="position:relative; left:740px; top:-10px;cursor:pointer"
-        @click="close"
-      ></i>
+    <el-dialog class="form_card" title="Change Requirement" :visible.sync="isForm" :modal="false">
       <el-form
         :model="ruleForm"
         :rules="rules"
@@ -82,69 +80,152 @@
             <el-option label="其他" value="其他"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="截止时间" prop="endDate" style="width:600px" required>
-          <el-col :span="11">
-            <el-date-picker
-              type="date"
-              placeholder="选择日期"
-              v-model="ruleForm.endDate"
-              style="width: 100%;"
-            ></el-date-picker>
-          </el-col>
+        <el-form-item label="截止时间" prop="endDate" style="width:490px" required>
+          <el-date-picker placeholder="选择日期" v-model="ruleForm.endDate" style="width: 200px;"></el-date-picker>
         </el-form-item>
-        <el-form-item label="所属迭代" prop="sprint">
-          <el-select v-model="ruleForm.sprintName" placeholder="请选择所属迭代">
-            <el-option v-for="item in sprintList" :key="item.index">
-              <el-option :label="item.sprintName" :value="item.sprintName"></el-option>
-            </el-option>
+        <el-form-item label="所属迭代" prop="stitle" style="position:relative; top:-20px">
+          <el-select v-model="ruleForm.sprintID" placeholder="请选择所属迭代">
+            <el-option
+              v-for="item in sprintList"
+              :key="item.index"
+              :label="item.title"
+              :value="item.ID"
+            ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="需求描述">
+        <el-form-item label="需求描述" style="position:relative; top:-20px">
           <el-input type="textarea" v-model="ruleForm.description"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')">立即更改</el-button>
-          <el-button @click="resetForm('ruleForm')">重置</el-button>
+          <el-button type="primary" @click="submitForm('ruleForm')" style="margin-left:500px">立即更改</el-button>
         </el-form-item>
       </el-form>
-    </el-card>
+    </el-dialog>
+
+    <el-dialog class="form_card" title="Create Requirement" :visible.sync="isCreate" :modal="false">
+      <el-form
+        :model="createForm"
+        :rules="rules"
+        ref="createForm"
+        label-width="100px"
+        class="demo-createForm"
+      >
+        <el-form-item label="需求标题" prop="title">
+          <el-input v-model="createForm.title"></el-input>
+        </el-form-item>
+        <el-form-item label="优先级" prop="priority">
+          <el-select v-model="createForm.priority" placeholder="请选择优先级">
+            <el-option label="最高" value="最高"></el-option>
+            <el-option label="较高" value="较高"></el-option>
+            <el-option label="一般" value="一般"></el-option>
+            <el-option label="较低" value="较低"></el-option>
+            <el-option label="最低" value="最低"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item
+          label="需求分类"
+          prop="kind"
+          style="float:right; margin-top:-70px;margin-right:20px"
+        >
+          <el-select v-model="createForm.kind" placeholder="请选择需求分类">
+            <el-option label="技术需求" value="技术需求"></el-option>
+            <el-option label="功能需求" value="功能需求"></el-option>
+            <el-option label="安全需求" value="安全需求"></el-option>
+            <el-option label="性能需求" value="性能需求"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="需求类型" prop="type" style="float:right;margin-right:20px">
+          <el-select v-model="createForm.type" placeholder="请选择需求类型">
+            <el-option label="新功能" value="新功能"></el-option>
+            <el-option label="功能优化" value="功能优化"></el-option>
+            <el-option label="交互优化" value="交互优化"></el-option>
+            <el-option label="视觉优化" value="视觉优化"></el-option>
+            <el-option label="其他" value="其他"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="截止时间" prop="endDate" style="width:490px" required>
+          <el-date-picker placeholder="选择日期" v-model="createForm.endDate" style="width: 200px;"></el-date-picker>
+        </el-form-item>
+        <el-form-item label="所属迭代" prop="stitle" style="position:relative; top:-20px">
+          <el-select v-model="createForm.sprintID" placeholder="请选择所属迭代">
+            <el-option
+              v-for="item in sprintList"
+              :key="item.index"
+              :label="item.title"
+              :value="item.ID"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="需求描述" style="position:relative; top:-20px">
+          <el-input type="textarea" v-model="createForm.description"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="createReqt('createForm')" style="margin-left:500px">立即创建</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+
+    <el-dialog title="Task List" :visible.sync="isTask" :modal="false">
+      <el-collapse>
+        <el-collapse-item v-for="(task,index) in taskList" :key="index">
+          <template slot="title">
+            <div :class="taskListName(task.priority)">
+              <span
+                style="color:white;font-size:15px;margin-left:20px;margin-right:10px"
+              >{{task.title}}</span>
+              <i class="header-icon el-icon-info"></i>
+            </div>
+          </template>
+          <el-row style="margin-left:35px;margin-top:10px">
+            <el-col :span="12">
+              <div class="grid-content bg-purple">状态：{{task.state}}</div>
+            </el-col>
+            <el-col :span="12">
+              <div class="grid-content bg-purple-light">负责人：{{task.username}}</div>
+            </el-col>
+          </el-row>
+          <el-row style="margin-left:35px">
+            <el-col :span="24">
+              <div class="grid-content bg-purple-dark">描述：{{task.description}}</div>
+            </el-col>
+          </el-row>
+          <el-row style="margin-left:35px">
+            <el-col :span="12">
+              <div class="grid-content bg-purple">开始日期:{{task.startDate}}</div>
+            </el-col>
+            <el-col :span="12">
+              <div class="grid-content bg-purple-light">截止日期：{{task.endDate}}</div>
+            </el-col>
+          </el-row>
+        </el-collapse-item>
+      </el-collapse>
+    </el-dialog>
   </div>
 </template>
-
-<style>
-.el-table .warning-row {
-  background: oldlace;
-}
-
-.el-table .success-row {
-  background: #f0f9eb;
-}
-</style>
 
 <script>
 export default {
   name: "ProjectSprint",
   data() {
     return {
+      currentID: 0,
       pID: 1,
-      pri: "success",
       isForm: 0,
-      sprintList: [
-        {
-          sprintName: "第一个迭代",
-        },
-        {
-          sprintName: "第二个迭代",
-        },
-      ],
+      isCreate: 0,
+      isTask: 0,
+      sprintList: [],
       reqtList: [],
-      ruleForm: {
+      ruleForm: {},
+      createForm: {},
+      taskList: {
         title: "",
-        priority: "",
-        kind: "",
-        type: "",
-        endDate: "",
+        state: "",
         description: "",
+        startDate: "",
+        endDate: "",
+        priority: "",
+        sprintTitle: "",
+        username: "",
       },
       rules: {
         title: [{ required: true, message: "请输入需求标题", trigger: "blur" }],
@@ -165,75 +246,167 @@ export default {
             trigger: "change",
           },
         ],
-        resource: [
-          { required: true, message: "请选择活动资源", trigger: "change" },
-        ],
         endDate: [
           {
-            type: "date",
             required: true,
             message: "请选择日期",
             trigger: "change",
           },
         ],
-        desc: [{ required: true, message: "请填写活动形式", trigger: "blur" }],
       },
     };
   },
-  created () {
+  created() {
     this.show();
+    this.getSprintList();
   },
   methods: {
-    change() {
+    change(row) {
       this.isForm = 1;
+      this.ruleForm = row;
     },
-    close() {
-      this.isForm = 0;
+    pri(pri) {
+      switch (pri) {
+        case "最高":
+          return "danger";
+        case "较高":
+          return "warning";
+        case "一般":
+          return "success";
+        case "较低":
+          return "primary";
+        case "最低":
+          return "info";
+      }
     },
     show() {
       this.axios
-        .post("http://39.97.175.119:8801/requirement/getReqtListByPID", {
-          params: {
-            ID: this._GLOBAL.pID,
-          },
+        .post("/api/requirement/getReqtListByPID?ID=" + this.pID, {
+          emulateJSON: true,
         })
         .then((response) => {
           if (response.data.message == "成功") {
-            this._GLOBAL.reqtList = response.data.data.reqtList;
-            // console.log(response.data.data.reqtList[0]);
+            this.reqtList = response.data.data.reqtList;
           }
         })
         .catch(function (error) {
           console.log(error);
         });
     },
-    // tableRowClassName({row, rowIndex}) {
-    //   if (rowIndex === 1) {
-    //     return 'warning-row';
-    //   } else if (rowIndex === 3) {
-    //     return 'success-row';
-    //   }
-    //   return '';
-    // },
-    // formatter(row, column) {
-    //   return row.address;
-    // },
+    getSprintList() {
+      this.axios
+        .post("/api/sprint/getSpListByPID?ID=" + this.pID, {
+          emulateJSON: true,
+        })
+        .then((response) => {
+          if (response.data.message == "成功") {
+            this.sprintList = response.data.data.spList;
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    showTaskList(id) {
+      this.axios
+        .get("/api/task/getTaskListByRid?reqtid=" + id, {
+          emulateJSON: true,
+        })
+        .then((response) => {
+          if (response.data.message == "成功") {
+            this.taskList = response.data.data.task;
+            this.isTask = 1;
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
     filterTag(value, row) {
-      return row.tag === value;
+      return row.priority === value;
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           alert("submit!");
+          this.axios
+            .post(
+              "/api/requirement/updateReqtByID",
+              {
+                ID: this.ruleForm.ID,
+                title: this.ruleForm.title,
+                kind: this.ruleForm.kind,
+                type: this.ruleForm.type,
+                priority: this.ruleForm.priority,
+                description: this.ruleForm.description,
+                endDate: this.ruleForm.endDate,
+                sprintID: this.ruleForm.sprintID,
+              },
+              {
+                emulateJSON: true,
+              }
+            )
+            .then((response) => {
+              if (response.data.message == "成功") {
+                this.isForm = 0;
+                this.show();
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
         } else {
           console.log("error submit!!");
           return false;
         }
       });
     },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
+    createReqt(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          alert("submit!");
+          this.axios
+            .post(
+              "/api/requirement/createReqt",
+              {
+                title: this.createForm.title,
+                kind: this.createForm.kind,
+                type: this.createForm.type,
+                priority: this.createForm.priority,
+                description: this.createForm.description,
+                endDate: this.createForm.endDate,
+                projectID: this.pID,
+                sprintID: this.createForm.sprintID,
+              },
+              {
+                emulateJSON: true,
+              }
+            )
+            .then((response) => {
+              if (response.data.message == "成功") {
+                this.show();
+                this.isCreate = 0;
+                this.createForm = [];
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
     },
+    taskListName(pri){
+      switch(pri){
+        case"最高":return "taskHighest";
+        case"较高":return "taskHigher";
+        case"一般":return "taskCommon";
+        case"较低":return "taskLower";
+        case"最低":return "taskLowest";
+      }
+    }
   },
 };
 </script>
@@ -242,12 +415,35 @@ export default {
 .reqt_card {
   margin: 0px 24px 24px 24px;
   overflow-y: auto;
-  height: 620px;
+  height: 600px;
 }
 .form_card {
   margin: 0px 24px 24px 24px;
-  width: 65%;
-  height: 50%;
   margin: auto;
+}
+.taskCommon{
+   width:100%; 
+   background:-webkit-linear-gradient(left,#9fdf7f,#E1F3D8,#F0F9EB,white);
+   border-radius: 5px
+}
+.taskHigher{
+   width:100%; 
+   background:-webkit-linear-gradient(left,#eebc71,#FAECD8,#FDF6EC,white);
+   border-radius: 5px
+}
+.taskHighest{
+   width:100%; 
+   background:-webkit-linear-gradient(left,#fd8e8e,#FDE2E2,#FEF0F0,white);
+   border-radius: 5px
+}
+.taskLower{
+   width:100%; 
+   background:-webkit-linear-gradient(left,#7abcff,#d5e6f7,#eef5fc,white);
+   border-radius: 5px
+}
+.taskLowest{
+   width:100%; 
+   background:-webkit-linear-gradient(left,#c9c9c9,#E9E9EB,#F4F4F5,white);
+   border-radius: 5px
 }
 </style>
