@@ -3,7 +3,7 @@
 		<el-card>
 			<div slot="header">
 				Basic Info
-				<el-button :v-if="isHost" @click="dialogVisible = true" style="float: right; padding: 3px 0" type="text">Modify</el-button>
+				<el-button v-show="isHost" @click="dialogVisible = true" style="float: right; padding: 3px 0" type="text">Edit</el-button>
 			</div>
 			<div class="card-content">
 				<el-card shadow="never">
@@ -20,7 +20,7 @@
 				</el-card>
 			</div>
 		</el-card>
-		<el-dialog title="Modify basic info" :visible.sync="dialogVisible" width="50%" :modal-append-to-body="false">
+		<el-dialog title="Edit basic info" :visible.sync="dialogVisible" width="50%" :modal-append-to-body="false">
 			<el-form :model="form">
 				<el-form-item label="Name" :label-width="formLabelWidth">
 					<el-input v-model="form.name" autocomplete="off" style="width: 65%;"></el-input>
@@ -44,7 +44,7 @@
 				</el-form-item>
 			</el-form>
 			<span slot="footer" class="dialog-footer">
-				<el-button @click="dialogVisible = false">Cancle</el-button>
+				<el-button @click="dialogVisible = false">Cancel</el-button>
 				<el-button type="primary" @click="dialogVisible = false">Save</el-button>
 			</span>
 		</el-dialog>
@@ -76,7 +76,8 @@
 				formLabelWidth: '120px',
 			}
 		},
-		created:function(){
+		created: function() {
+			this.isHostF();
 			this.name = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].name;
 			this.host_name = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].host_ID;
 			this.description = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].description;
@@ -91,6 +92,20 @@
 						done();
 					})
 					.catch(_ => {});
+			},
+			isHostF() {
+				this.axios.get('http://39.97.175.119:8801/project/isPrjHost', {
+						params: {
+							ID: this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].ID,
+							UID: this._GLOBAL.userObj.ID
+						}
+					})
+					.then((response) => {
+						if (response.data.message == '成功') {
+							this.isHost = response.data.data.isHost;
+							console.log(this.isHost);
+						}
+					})
 			}
 		}
 	}

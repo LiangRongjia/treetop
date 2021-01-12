@@ -16,6 +16,9 @@
       <el-tab-pane label="Defect" name="defect">
         <project-defect :projectID="projectID"/>
       </el-tab-pane>
+			<el-tab-pane label="Team" name="team">
+			  <project-team :projectID="projectID"/>
+			</el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -26,6 +29,7 @@ import ProjectSprint from './Sprint/Sprint.vue'
 import ProjectProgress from './Progress/Progress.vue'
 import ProjectDefect from './Defect.vue'
 import ProjectBasic from './Basic/Basic.vue'
+import ProjectTeam from './Team.vue'
 
 /* 普通情况下，组件使用 props 传参
  * 本组件由于用于 route-view，无法传动态参数（静态参数可传，但这里需要动态参数）
@@ -39,7 +43,8 @@ export default{
     'project-require': ProjectRequire,
     'project-basic': ProjectBasic,
     'project-defect': ProjectDefect,
-    'project-progress': ProjectProgress
+    'project-progress': ProjectProgress,
+		'project-team': ProjectTeam
   },
   data () {
     return {

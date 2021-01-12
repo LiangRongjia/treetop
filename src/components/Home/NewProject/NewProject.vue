@@ -4,9 +4,9 @@
 			<el-tab-pane label="Create Project" name="create">
 				<create />
 			</el-tab-pane>
-			<el-tab-pane label=" Join Project" name="add">
+			<!-- <el-tab-pane label=" Join Project" name="add">
 				<add />
-			</el-tab-pane>
+			</el-tab-pane> -->
 		</el-tabs>
 	</div>
 </template>
