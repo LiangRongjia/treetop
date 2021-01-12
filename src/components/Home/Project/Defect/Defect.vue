@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-button type="text" id="new_reqt" style="margin-left:1100px" @click="isCreate=1">+ New</el-button>
-    <el-card class="reqt_card">
-      <el-table :data="reqtList" style="width: 100% " max-height="560px" @row-click="change">
+    <el-button type="text" id="new_defect" style="margin-left:1100px" @click="isCreate=1">+ New</el-button>
+    <el-card class="defect_card">
+      <el-table :data="defectList" style="width: 100% " max-height="560px" @row-click="change">
         <el-table-column type="index" width="50"></el-table-column>
         <el-table-column
           prop="priority"
@@ -18,28 +18,24 @@
           </template>
         </el-table-column>
         <el-table-column prop="title" label="标题" width="180" align="center"></el-table-column>
-        <el-table-column prop="kind" label="分类" width="180" align="center"></el-table-column>
         <el-table-column prop="type" label="类型" width="180" align="center"></el-table-column>
+        <el-table-column prop="state" label="状态" width="180" align="center"></el-table-column>
         <el-table-column prop="stitle" label="所属迭代" width="150" align="center"></el-table-column>
+        <el-table-column prop="name" label="负责人" width="150" align="center"></el-table-column>
         <el-table-column
           prop="endDate"
           label="截止日期"
           sortable
-          width="220px"
+          width="210px"
           header-align="center"
           align="center"
           column-key="date"
         ></el-table-column>
-        <el-table-column prop="description" label="需求描述" width="200" align="center"></el-table-column>
-        <el-table-column fixed="right" label="任务列表" width="100" align="center">
-          <template slot-scope="scope">
-            <el-button @click.native.stop="showTaskList(scope.row.ID)" size="small">查看</el-button>
-          </template>
-        </el-table-column>
+        <el-table-column prop="description" label="缺陷描述" width="200" align="center"></el-table-column>
       </el-table>
     </el-card>
 
-    <el-dialog class="form_card" title="Change Requirement" :visible.sync="isForm" :modal="false">
+    <el-dialog class="form_card" title="Change Defect" :visible.sync="isForm" :modal="false">
       <el-form
         :model="ruleForm"
         :rules="rules"
@@ -47,7 +43,7 @@
         label-width="100px"
         class="demo-ruleForm"
       >
-        <el-form-item label="需求标题" prop="title">
+        <el-form-item label="缺陷标题" prop="title">
           <el-input v-model="ruleForm.title"></el-input>
         </el-form-item>
         <el-form-item label="优先级" prop="priority">
@@ -59,25 +55,27 @@
             <el-option label="最低" value="最低"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item
-          label="需求分类"
-          prop="kind"
-          style="float:right; margin-top:-70px;margin-right:20px"
-        >
-          <el-select v-model="ruleForm.kind" placeholder="请选择需求分类">
-            <el-option label="技术需求" value="技术需求"></el-option>
-            <el-option label="功能需求" value="功能需求"></el-option>
-            <el-option label="安全需求" value="安全需求"></el-option>
-            <el-option label="性能需求" value="性能需求"></el-option>
+        <el-form-item label="缺陷状态" prop="state" style="float:right;margin-right:20px;margin-top:-65px">
+          <el-select v-model="ruleForm.state" placeholder="请选择缺陷状态">
+            <el-option label="打开" value="打开"></el-option>
+            <el-option label="已确认" value="已确认"></el-option>
+            <el-option label="修复中" value="修复中"></el-option>
+            <el-option label="已解决" value="已解决"></el-option>
+            <el-option label="关闭" value="关闭"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="需求类型" prop="type" style="float:right;margin-right:20px">
-          <el-select v-model="ruleForm.type" placeholder="请选择需求类型">
-            <el-option label="新功能" value="新功能"></el-option>
-            <el-option label="功能优化" value="功能优化"></el-option>
-            <el-option label="交互优化" value="交互优化"></el-option>
-            <el-option label="视觉优化" value="视觉优化"></el-option>
-            <el-option label="其他" value="其他"></el-option>
+        <el-form-item label="缺陷类型" prop="type" style="float:right;margin-right:20px">
+          <el-select v-model="ruleForm.type" placeholder="请选择缺陷类型">
+            <el-option label="功能问题" value="功能问题"></el-option>
+            <el-option label="性能问题" value="性能问题"></el-option>
+            <el-option label="接口问题" value="接口问题"></el-option>
+            <el-option label="安全问题" value="安全问题"></el-option>
+            <el-option label="UI界面问题" value="UI界面问题"></el-option>
+            <el-option label="兼容性问题" value="兼容性问题"></el-option>
+            <el-option label="易用性问题" value="易用性问题"></el-option>
+            <el-option label="数据问题" value="数据问题"></el-option>
+            <el-option label="逻辑问题" value="逻辑问题"></el-option>
+            <el-option label="需求问题" value="需求问题"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="截止时间" prop="endDate" style="width:490px" required>
@@ -93,7 +91,17 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="需求描述" style="position:relative; top:-20px">
+        <el-form-item label="负责人" prop="name" style="position:relative; top:-20px">
+          <el-select v-model="ruleForm.userID" placeholder="请选择负责人">
+            <el-option
+              v-for="user in userList"
+              :key="user.index"
+              :label="user.name"
+              :value="user.ID"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="缺陷描述" style="position:relative; top:-20px">
           <el-input type="textarea" v-model="ruleForm.description"></el-input>
         </el-form-item>
         <el-form-item>
@@ -102,7 +110,7 @@
       </el-form>
     </el-dialog>
 
-    <el-dialog class="form_card" title="Create Requirement" :visible.sync="isCreate" :modal="false">
+    <el-dialog class="form_card" title="Create Defect" :visible.sync="isCreate" :modal="false">
       <el-form
         :model="createForm"
         :rules="rules"
@@ -110,7 +118,7 @@
         label-width="100px"
         class="demo-createForm"
       >
-        <el-form-item label="需求标题" prop="title">
+        <el-form-item label="缺陷标题" prop="title">
           <el-input v-model="createForm.title"></el-input>
         </el-form-item>
         <el-form-item label="优先级" prop="priority">
@@ -122,25 +130,27 @@
             <el-option label="最低" value="最低"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item
-          label="需求分类"
-          prop="kind"
-          style="float:right; margin-top:-65px;margin-right:20px"
-        >
-          <el-select v-model="createForm.kind" placeholder="请选择需求分类">
-            <el-option label="技术需求" value="技术需求"></el-option>
-            <el-option label="功能需求" value="功能需求"></el-option>
-            <el-option label="安全需求" value="安全需求"></el-option>
-            <el-option label="性能需求" value="性能需求"></el-option>
+        <el-form-item label="缺陷状态" prop="state" style="float:right;margin-right:20px;margin-top:-65px">
+          <el-select v-model="createForm.state" placeholder="请选择缺陷状态">
+            <el-option label="打开" value="打开"></el-option>
+            <el-option label="已确认" value="已确认"></el-option>
+            <el-option label="修复中" value="修复中"></el-option>
+            <el-option label="已解决" value="已解决"></el-option>
+            <el-option label="关闭" value="关闭"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="需求类型" prop="type" style="float:right;margin-right:20px">
-          <el-select v-model="createForm.type" placeholder="请选择需求类型">
-            <el-option label="新功能" value="新功能"></el-option>
-            <el-option label="功能优化" value="功能优化"></el-option>
-            <el-option label="交互优化" value="交互优化"></el-option>
-            <el-option label="视觉优化" value="视觉优化"></el-option>
-            <el-option label="其他" value="其他"></el-option>
+        <el-form-item label="缺陷类型" prop="type" style="float:right;margin-right:20px">
+          <el-select v-model="createForm.type" placeholder="请选择缺陷类型">
+            <el-option label="功能问题" value="功能问题"></el-option>
+            <el-option label="性能问题" value="性能问题"></el-option>
+            <el-option label="接口问题" value="接口问题"></el-option>
+            <el-option label="安全问题" value="安全问题"></el-option>
+            <el-option label="UI界面问题" value="UI界面问题"></el-option>
+            <el-option label="兼容性问题" value="兼容性问题"></el-option>
+            <el-option label="易用性问题" value="易用性问题"></el-option>
+            <el-option label="数据问题" value="数据问题"></el-option>
+            <el-option label="逻辑问题" value="逻辑问题"></el-option>
+            <el-option label="需求问题" value="需求问题"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="截止时间" prop="endDate" style="width:490px" required>
@@ -156,50 +166,23 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="需求描述" style="position:relative; top:-20px">
+        <el-form-item label="负责人" prop="name" style="position:relative; top:-20px">
+          <el-select v-model="createForm.userID" placeholder="请选择负责人">
+            <el-option
+              v-for="user in userList"
+              :key="user.index"
+              :label="user.name"
+              :value="user.ID"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="缺陷描述" style="position:relative; top:-20px">
           <el-input type="textarea" v-model="createForm.description"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="createReqt('createForm')" style="margin-left:500px">立即创建</el-button>
+          <el-button type="primary" @click="createDefect('createForm')" style="margin-left:500px">立即创建</el-button>
         </el-form-item>
       </el-form>
-    </el-dialog>
-
-    <el-dialog title="Task List" :visible.sync="isTask" :modal="false">
-      <el-collapse>
-        <el-collapse-item v-for="(task,index) in taskList" :key="index">
-          <template slot="title">
-            <div :class="taskListName(task.priority)">
-              <span
-              class="task_color"
-                style="font-size:15px;margin-left:20px;margin-right:10px;font: bold 15px '黑体', 'Arial';"
-              >{{task.title}}</span>
-              <i class="header-icon el-icon-info" ></i>
-            </div>
-          </template>
-          <el-row style="margin-left:35px;margin-top:10px">
-            <el-col :span="12">
-              <div class="grid-content bg-purple">状态：{{task.state}}</div>
-            </el-col>
-            <el-col :span="12">
-              <div class="grid-content bg-purple-light">负责人：{{task.username}}</div>
-            </el-col>
-          </el-row>
-          <el-row style="margin-left:35px">
-            <el-col :span="24">
-              <div class="grid-content bg-purple-dark">描述：{{task.description}}</div>
-            </el-col>
-          </el-row>
-          <el-row style="margin-left:35px">
-            <el-col :span="12">
-              <div class="grid-content bg-purple">开始日期:{{task.startDate}}</div>
-            </el-col>
-            <el-col :span="12">
-              <div class="grid-content bg-purple-light">截止日期：{{task.endDate}}</div>
-            </el-col>
-          </el-row>
-        </el-collapse-item>
-      </el-collapse>
     </el-dialog>
   </div>
 </template>
@@ -213,37 +196,27 @@ export default {
       pID: 1,
       isForm: 0,
       isCreate: 0,
-      isTask: 0,
       sprintList: [],
-      reqtList: [],
+      defectList: [],
+      userList:[],
       ruleForm: {},
       createForm: {},
-      taskList: {
-        title: "",
-        state: "",
-        description: "",
-        startDate: "",
-        endDate: "",
-        priority: "",
-        sprintTitle: "",
-        username: "",
-      },
       rules: {
-        title: [{ required: true, message: "请输入需求标题", trigger: "blur" }],
+        title: [{ required: true, message: "请输入缺陷标题", trigger: "blur" }],
         priority: [
           { required: true, message: "请选择优先级", trigger: "change" },
         ],
-        kind: [
+        state: [
           {
             required: true,
-            message: "请选择一个需求分类",
+            message: "请选择一个缺陷状态",
             trigger: "change",
           },
         ],
         type: [
           {
             required: true,
-            message: "请选择一个需求类型",
+            message: "请选择一个缺陷类型",
             trigger: "change",
           },
         ],
@@ -260,6 +233,7 @@ export default {
   created() {
     this.show();
     this.getSprintList();
+    this.getUserList();
   },
   methods: {
     change(row) {
@@ -282,12 +256,12 @@ export default {
     },
     show() {
       this.axios
-        .post("/api/requirement/getReqtListByPID?ID=" + this.pID, {
+        .post("/api/defect/getDefListByPID?ID=" + this.pID, {
           emulateJSON: true,
         })
         .then((response) => {
           if (response.data.message == "成功") {
-            this.reqtList = response.data.data.reqtList;
+            this.defectList = response.data.data.defectList;
           }
         })
         .catch(function (error) {
@@ -308,15 +282,15 @@ export default {
           console.log(error);
         });
     },
-    showTaskList(id) {
+    getUserList() {
       this.axios
-        .get("/api/task/getTaskListByRid?reqtid=" + id, {
+        .get("/api/project/getMemberListByPID?ID=" + this.pID, {
           emulateJSON: true,
         })
         .then((response) => {
           if (response.data.message == "成功") {
-            this.taskList = response.data.data.task;
-            this.isTask = 1;
+            this.userList = response.data.data.memberList;
+            console.log(this.userList);
           }
         })
         .catch(function (error) {
@@ -332,16 +306,17 @@ export default {
           alert("submit!");
           this.axios
             .post(
-              "/api/requirement/updateReqtByID",
+              "/api/defect/updateDefByID",
               {
                 ID: this.ruleForm.ID,
                 title: this.ruleForm.title,
-                kind: this.ruleForm.kind,
+                state: this.ruleForm.state,
                 type: this.ruleForm.type,
                 priority: this.ruleForm.priority,
                 description: this.ruleForm.description,
                 endDate: this.ruleForm.endDate,
                 sprintID: this.ruleForm.sprintID,
+                userID:this.ruleForm.userID
               },
               {
                 emulateJSON: true,
@@ -362,22 +337,23 @@ export default {
         }
       });
     },
-    createReqt(formName) {
+    createDefect(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           alert("submit!");
           this.axios
             .post(
-              "/api/requirement/createReqt",
+              "/api/defect/createDefect",
               {
                 title: this.createForm.title,
-                kind: this.createForm.kind,
+                state: this.createForm.state,
                 type: this.createForm.type,
                 priority: this.createForm.priority,
                 description: this.createForm.description,
                 endDate: this.createForm.endDate,
                 projectID: this.pID,
                 sprintID: this.createForm.sprintID,
+                userID:this.ruleForm.userID
               },
               {
                 emulateJSON: true,
@@ -399,26 +375,22 @@ export default {
         }
       });
     },
-    taskListName(pri) {
-      switch (pri) {
-        case "最高":
-          return "taskHighest";
-        case "较高":
-          return "taskHigher";
-        case "一般":
-          return "taskCommon";
-        case "较低":
-          return "taskLower";
-        case "最低":
-          return "taskLowest";
+    taskListName(pri){
+      switch(pri){
+        case"最高":return "taskHighest";
+        case"较高":return "taskHigher";
+        case"一般":return "taskCommon";
+        case"较低":return "taskLower";
+        case"最低":return "taskLowest";
       }
-    },
+    }
   },
-};
+}
 </script>
 
+
 <style>
-.reqt_card {
+.defect_card {
   margin: 0px 24px 24px 24px;
   overflow-y: auto;
   height: 600px;
@@ -426,33 +398,5 @@ export default {
 .form_card {
   margin: 0px 24px 24px 24px;
   margin: auto;
-}
-.taskCommon {
-  width: 100%;
-  background: -webkit-linear-gradient(left, #b6f199, #e1f3d8, #f0f9eb, white);
-  border-radius: 5px;
-}
-.taskHigher {
-  width: 100%;
-  background: -webkit-linear-gradient(left, #f5da81, #faecd8, #fdf6ec, white);
-  border-radius: 5px;
-}
-.taskHighest {
-  width: 100%;
-  background: -webkit-linear-gradient(left, #fa9696, #fde2e2, #fef0f0, white);
-  border-radius: 5px;
-}
-.taskLower {
-  width: 100%;
-  background: -webkit-linear-gradient(left, #7ad5ff, #d5e6f7, #eef5fc, white);
-  border-radius: 5px;
-}
-.taskLowest {
-  width: 100%;
-  background: -webkit-linear-gradient(left, #c9c9c9, #e9e9eb, #f4f4f5, white);
-  border-radius: 5px;
-}
-.task_color{
-  color: #ffffffd5;
 }
 </style>
