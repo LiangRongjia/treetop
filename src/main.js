@@ -27,8 +27,7 @@ Vue.prototype._GLOBAL = {
   }
 }
 
-/* eslint-disable no-new */
-new Vue({
+Vue.prototype.$eventBus = new Vue({
   el: '#app',
   router,
   components: { App },
