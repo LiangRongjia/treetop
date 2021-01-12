@@ -3,7 +3,7 @@
 		<el-card>
 			<div slot="header">
 				Basic Info
-				<el-button v-show="isHost" @click="dialogVisible = true" style="float: right; padding: 3px 0" type="text">Edit</el-button>
+				<el-button :v-show="isHost" @click="dialogVisible = true" style="float: right; padding: 3px 0" type="text">Edit</el-button>
 			</div>
 			<div class="card-content">
 				<el-card shadow="never">
@@ -45,7 +45,7 @@
 			</el-form>
 			<span slot="footer" class="dialog-footer">
 				<el-button @click="dialogVisible = false">Cancel</el-button>
-				<el-button type="primary" @click="dialogVisible = false">Save</el-button>
+				<el-button type="primary" @click="saveEdit">Save</el-button>
 			</span>
 		</el-dialog>
 	</div>
@@ -67,11 +67,11 @@
 				isHost: true,
 				dialogVisible: false,
 				form: {
-					name: '',
-					status: '',
-					date1: '',
-					date2: '',
-					desc: ''
+					name: this.name,
+					status: this.state,
+					date1: this.start,
+					date2: this.end,
+					desc: this.description
 				},
 				formLabelWidth: '120px',
 			}
@@ -106,6 +106,26 @@
 							console.log(this.isHost);
 						}
 					})
+			},
+			saveEdit() {
+				this.dialogVisible = false;
+				this.axios.post('/api/project/updatePrjAll', {
+					"name": this.form.name,
+					"description": this.form.desc,
+					"startDate": this.form.start,
+					"endDate": this.form.end,
+					"state": this.form.status,
+					"ID": this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].ID
+				}, {
+					emulateJSON: true
+				})
+				.then((response) => {
+					if (response.data.message == '成功') {
+						alert('Edit successfully!');
+					} else {
+						alert('Edit fail!');
+					}
+				})
 			}
 		}
 	}

@@ -5,14 +5,14 @@
 			<div class="card-content">
 				<el-card shadow="never">
 					<div slot="header">Current sprint</div>
-					<p>{{num}}</p><br />
+					<p>{{name}}</p><br />
 				</el-card>
 				<el-card shadow="never">
 					<div slot="header">Current sprint status</div>
 					<p>{{state}}</p>
 				</el-card>
 				<el-card shadow="never">
-					<div slot="header">Before the end of current iteration</div>
+					<div slot="header">Deadline of current iteration</div>
 					<p>{{time}}</p>
 				</el-card>
 			</div>
@@ -22,13 +22,38 @@
 
 <script>
 	export default {
+		props: [
+			'name',
+			'state',
+			'time',
+		],
 		data() {
 			return {
-				num: 0,
-				state: '',
-				time: 0,
+// 				name: '',
+// 				state: '',
+// 				time: 0,
 			}
-		}
+		},
+		created:function() {
+			//this.getSprintName();
+		},
+		methods: {
+			getSprintName () {
+				this.axios.post('http://39.97.175.119:8801/sprint/getSpListByPID?ID=' + this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].ID)
+					.then((response) => {
+						if (response.data.message == '成功') {
+							var list = response.data.data.spList;
+							if (list.length > 0) {
+								this.name = list[list.length - 1].title;
+								this.time = list[list.length - 1].endDate;
+							} else {
+								this.name = null;
+							}
+							// console.log(this.isHost);
+						}
+					})
+			}
+		},
 	}
 </script>
 
