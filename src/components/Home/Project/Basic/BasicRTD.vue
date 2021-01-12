@@ -11,11 +11,11 @@
 							</el-card>
 						</el-col>
 						<el-col :span="8" :offset="2">
-							<p>All : {{name}}</p><br />
-							<p>Pending : {{name}}</p><br />
-							<p>In progress : {{start}}</p><br />
-							<p>Completed : {{start}}</p><br />
-							<p>Delay : {{end}}</p>
+							<p>All : </p><br />
+							<p>Pending : </p><br />
+							<p>In progress : </p><br />
+							<p>Completed : </p><br />
+							<p>Delay : </p>
 						</el-col>
 					</el-row>
 				</el-card>

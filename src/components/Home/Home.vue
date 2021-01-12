@@ -1,6 +1,6 @@
 <template>
   <div class="app__home">
-    <home-menu class="home__menu" :userID="userID"/>
+    <home-menu class="home__menu customScrollBar" :userID="userID" :userName="userName"/>
     <router-view class="home__main customScrollBar"></router-view>
   </div>
 </template>
@@ -15,7 +15,8 @@ export default {
   data () {
     return {
       // userID 依赖于全局变量
-      userID: this._GLOBAL.userID
+      userID: this._GLOBAL.userObj.ID,
+      userName: this._GLOBAL.userObj.name,
     }
   }
 }
@@ -41,6 +42,7 @@ export default {
     display: flex;
     flex-direction: column;
     border-right: rgba(0,0,0,0.1) solid 1px;
+		overflow: auto;
   }
   .home__main{
     grid-column-start: 6;
