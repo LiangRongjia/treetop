@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import ProjectRequire from './Require.vue'
+import ProjectRequire from './Require/Require.vue'
 import ProjectSprint from './Sprint/Sprint.vue'
 import ProjectProgress from './Progress/Progress.vue'
 import ProjectDefect from './Defect.vue'
