@@ -72,7 +72,7 @@
 				if (this.$refs['home-menu']['activeIndex'] != 'my-info' && this.$refs['home-menu']['activeIndex'] != 'my-jobs'
 					&& this.$refs['home-menu']['activeIndex'] != 'newProject') {
 					this._GLOBAL.projectIndex = this.$refs['home-menu']['activeIndex'];
-					console.log(this._GLOBAL.projectIndex);
+					//console.log(this._GLOBAL.projectIndex);
 				}
 			}
 		},

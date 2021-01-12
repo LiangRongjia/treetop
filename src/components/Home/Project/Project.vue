@@ -5,7 +5,7 @@
         <project-basic :projectID="projectID"/>
       </el-tab-pane>
       <el-tab-pane label="Sprint" name="sprint">
-        <project-sprint :projectID="projectID"/>
+        <project-sprint :projectIndex="projectID"/>
       </el-tab-pane>
       <el-tab-pane label="Require" name="require">
         <project-require :projectID="projectID"/>

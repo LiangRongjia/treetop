@@ -24,7 +24,8 @@ Vue.prototype._GLOBAL = {
     ID: 0,
     name: '',
     avatar: ''
-  }
+  },
+  ProjectList:[]
 }
 
 Vue.prototype.$eventBus = new Vue({
