@@ -7,9 +7,9 @@
     <div class="card-content">
       <el-card shadow="never">
         <div slot="header">Sprint</div>
-        <p>Name : {{name}}</p><br />
-        <p>Start : {{start}}</p><br />
-        <p>End : {{end}}</p>
+        <p>Name : {{title}}</p><br />
+        <p>StartDate : {{startDate}}</p><br />
+        <p>EndDate : {{endDate}}</p>
       </el-card>
       <el-card shadow="never">
         <div slot="header">Description</div>
@@ -20,9 +20,9 @@
       :visible.sync="isSprintEditting"
       :modal="false">
       <h1>Name</h1>
-      <el-input v-model="sprintInfo.name"placeholder="请输入内容"></el-input>
+      <el-input v-model="sprintInfo.title"placeholder="请输入内容"></el-input>
       <h1>Start</h1>
-      <el-date-picker v-model="sprintInfo.start" type="date"/>
+      <el-date-picker v-model="sprintInfo.startDate" type="date"/>
       <h1>End</h1>
       <el-date-picker v-model="sprintInfo.end" type="date"/>
       <h1>Description</h1>
@@ -39,18 +39,18 @@
 export default {
   name: 'SprintInfo',
   props: [
-    'name',
-    'start',
-    'end',
+    'title',
+    'startDate',
+    'endDate',
     'description'
   ],
   data () {
     return {
       isSprintEditting: false,
       sprintInfo: {
-        name: this.name,
-        start: this.start,
-        end: this.end,
+        title: this.title,
+        startDate: this.startDate,
+        endDate: this.endDate,
         description: this.description
       }
     }

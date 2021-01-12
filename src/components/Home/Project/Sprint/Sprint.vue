@@ -9,10 +9,10 @@
       </el-option>
     </el-select>
     <sprint-info class="sprint__card"
-      :title="sprint.title"
-      :start="sprint.start"
-      :end="sprint.end"
-      :description="sprint.description"/>
+      :title="sprintsList[sprintIndex].title"
+      :startDate="sprintsList[sprintIndex].startDate"
+      :endDate="sprintsList[sprintIndex].endDate"
+      :description="sprintsList[sprintIndex].description"/>
     <list-card class="sprint__card"
       title="Requires"
       @add="addRequires"
