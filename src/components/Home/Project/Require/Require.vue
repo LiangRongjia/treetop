@@ -1,10 +1,10 @@
 <template>
   <div>
-    <el-button type="text" id="new_task">
-      <i class="el-icon-circle-plus-outline"></i>新建
+    <el-button type="text" id="new_task" style="margin-left:1100px">
+      + New
     </el-button>
     <el-card class="reqt_card">
-      <el-table :data="reqtList" style="width: 100% ; height: 100%" @row-click="change">
+      <el-table :data="reqtList" style="width: 100% ; height: 580px" @row-click="change">
         <el-table-column type="index" width="50"></el-table-column>
         <el-table-column
           prop="priority"
@@ -16,7 +16,7 @@
           filter-placement="bottom-end"
         >
           <template slot-scope="scope">
-            <el-tag :type="pri" disable-transitions>{{scope.row.priority}}</el-tag>
+            <el-tag :type="pri(scope.row.priority)" disable-transitions>{{scope.row.priority}}</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="title" label="标题" width="180" align="center"></el-table-column>
@@ -36,12 +36,10 @@
       </el-table>
     </el-card>
 
-    <el-card class="form_card" v-if="isForm">
-      <i
-        class="el-icon-close"
-        style="position:relative; left:740px; top:-10px;cursor:pointer"
-        @click="close"
-      ></i>
+    <el-dialog class="form_card" title="Change Requirement"
+      :visible.sync="isForm"
+      :before-close="handleClose"
+      :modal="false">
       <el-form
         :model="ruleForm"
         :rules="rules"
@@ -92,11 +90,9 @@
             ></el-date-picker>
           </el-col>
         </el-form-item>
-        <el-form-item label="所属迭代" prop="sprint">
-          <el-select v-model="ruleForm.sprintName" placeholder="请选择所属迭代">
-            <el-option v-for="item in sprintList" :key="item.index">
-              <el-option :label="item.sprintName" :value="item.sprintName"></el-option>
-            </el-option>
+        <el-form-item label="所属迭代" prop="stitle">
+          <el-select v-model="ruleForm.stitle" placeholder="请选择所属迭代">
+            <el-option v-for="item in sprintList" :key="item.index" :value="item.title"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="需求描述">
@@ -104,10 +100,10 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('ruleForm')">立即更改</el-button>
-          <el-button @click="resetForm('ruleForm')">重置</el-button>
+          <el-button @click="resetForm('ruleForm')">还原</el-button>
         </el-form-item>
       </el-form>
-    </el-card>
+    </el-dialog>
   </div>
 </template>
 
@@ -127,25 +123,17 @@ export default {
   data() {
     return {
       pID: 1,
-      pri: "success",
       isForm: 0,
       sprintList: [
         {
-          sprintName: "第一个迭代",
+          title: "第一个迭代",
         },
         {
-          sprintName: "第二个迭代",
+          title: "第二个迭代",
         },
       ],
       reqtList: [],
-      ruleForm: {
-        title: "",
-        priority: "",
-        kind: "",
-        type: "",
-        endDate: "",
-        description: "",
-      },
+      ruleForm: {},
       rules: {
         title: [{ required: true, message: "请输入需求标题", trigger: "blur" }],
         priority: [
@@ -180,26 +168,31 @@ export default {
       },
     };
   },
-  created () {
+  created() {
     this.show();
   },
   methods: {
-    change() {
+    change(row) {
       this.isForm = 1;
+      this.ruleForm=row;
     },
-    close() {
-      this.isForm = 0;
+    pri(pri){
+      switch(pri){
+        case "最高":return "danger";
+        case "较高":return "warning";
+        case "普通":return "info";
+        case "较低":return "success";
+        case "最低":return "primary";
+      }
     },
     show() {
       this.axios
-        .post("http://39.97.175.119:8801/requirement/getReqtListByPID", {
-          params: {
-            ID: this._GLOBAL.pID,
-          },
+        .post("/api/requirement/getReqtListByPID?ID="+this.pID, {
+          emulateJSON: true,
         })
         .then((response) => {
           if (response.data.message == "成功") {
-            this._GLOBAL.reqtList = response.data.data.reqtList;
+            this.reqtList = response.data.data.reqtList;
             // console.log(response.data.data.reqtList[0]);
           }
         })
@@ -246,8 +239,6 @@ export default {
 }
 .form_card {
   margin: 0px 24px 24px 24px;
-  width: 65%;
-  height: 50%;
   margin: auto;
 }
 </style>
