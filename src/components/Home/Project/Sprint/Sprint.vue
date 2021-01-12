@@ -54,9 +54,6 @@
 import ListCard from './ListCard.vue'
 import SprintInfo from './SprintInfo.vue'
 import Meetings from './Meetings.vue'
-/* 该组件依据当前项目名，获取所有迭代信息
- * 当前项目名从路径(或全局变量？])获取
- */
 export default{
   title: 'ProjectSprint',
   components: {
@@ -82,6 +79,7 @@ export default{
         { ID: 2, title: 'secondSprint' }
       ],
       sprintIndex: 0,
+      sprinyID: 0,
       sprint: {
         ID: 1,
         title: 'firstSprint',
@@ -159,7 +157,21 @@ export default{
       this.requires = this.requires
       this.tasks = this.tasks
       this.defects = this.defects
+    },
+    sprintIndex (to, from){
+      this.getRequires()
+      this.getTasks()
+      this.getDefects()
+      this.getMeetings()
     }
+  },
+  mounted () {
+    this.getSprints()
+    // 包含了回调：
+    // this.getRequires()
+    // this.getTasks()
+    // this.getDefects()
+    // this.getMeetings()
   },
   methods: {
     addRequires () {
@@ -173,6 +185,67 @@ export default{
     },
     addMeeting () {
       this.isAddMeeting = true
+    },
+    getSprints () {
+      var projectID = 1 // this.projectID
+      this.axios
+      .post('http://39.97.175.119:8801/sprint/getSpListByPID?ID=' + projectID)
+      .then((response) => {
+        if(response.data.message == '成功'){
+          console.log('getSprints response:', response)
+          if(response.data.data.reqtList.length > 0){
+            this.sprintsList = response.data.data.reqtList
+            // this.getRequires()
+            // this.getTasks()
+            // this.getDefects()
+            // this.getMeetings()
+          }
+        }
+      })
+    },
+    getRequires () {
+      var sprintID = 1 // this.sprintsList[sprintIndex].ID
+      this.axios
+      .post('http://39.97.175.119:8801/requirement/getReqtListBySID?ID')
+      .then((response) => {
+        console.log('getRequires:', response)
+        if(response.data.message == '成功'){
+          this.requires = response.data.data.reqtList
+        }
+      })
+    },
+    getDefects () {
+      var sprintID = 1 // this.sprintsList[sprintIndex].ID
+      this.axios
+      .post('http://39.97.175.119:8801/defect/getDefListBySID?ID')
+      .then((response) => {
+        console.log('getDefects:',response)
+        if(response.data.message == '成功'){
+          this.defects = response.data.data.reqtList
+        }
+      })
+    },
+    getTasks () {
+      var sprintID = 1 // this.sprintsList[sprintIndex].ID
+      this.axios
+      .post('http://39.97.175.119:8801/??')
+      .then((response) => {
+        console.log('getTasks: ', response)
+        if(response.data.message == '成功'){
+          this.tasks = response.data.data.reqtList
+        }
+      })
+    },
+    getMeetings () {
+      var sprintID = 1 // this.sprintsList[sprintIndex].ID
+      this.axios
+      .post('http://39.97.175.119:8801/??')
+      .then((response) => {
+        console.log('getTasks: ', response)
+        if(response.data.message == '成功'){
+          this.defects = response.data.data.reqtList
+        }
+      })
     }
   }
 }
