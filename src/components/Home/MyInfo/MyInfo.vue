@@ -17,9 +17,7 @@
         <p>{{MyInfo.name}}</p>
       </el-card>
     </div>
-    <el-dialog class="my-info__edit-dialog" title="Editting My Information "
-      :visible.sync="isMyInfoEditting"
-      :modal="false">
+    <el-dialog class="my-info__edit-dialog" title="Editting My Information " :visible.sync="isMyInfoEditting" :modal="false">
       <h1>Name</h1>
       <el-input v-model="newMyInfo.name"></el-input>
       <h1>Password</h1>
@@ -34,7 +32,7 @@
       </el-upload>
       <div slot="footer" class="dialog-footer">
         <el-button @click="isMyInfoEditting = false">取消</el-button>
-        <el-button type="primary" @click="isMyInfoEditting = false">确定</el-button>
+        <el-button type="primary" @click="confirmEdit">确定</el-button>
       </div>
     </el-dialog>
   </el-card>
@@ -63,6 +61,9 @@ export default {
   methods: {
     editMyInfo () {
       this.isMyInfoEditting = true
+    },
+    confirmEdit () {
+      this.isMyInfoEditting = false
     }
   }
 }

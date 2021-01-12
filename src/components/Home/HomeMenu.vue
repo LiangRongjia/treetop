@@ -69,10 +69,10 @@
 		watch: {
 			// 维护全局变量 projectID
 			$route(to, from) {
-				if (this.$refs['home-menu']['activeIndex'] != 'my-info' && this.$refs['home-menu']['activeIndex'] != 'my-jobs'
+				if (this.$refs['home-menu']['activeIndex'] != 'my-info'
+					&& this.$refs['home-menu']['activeIndex'] != 'my-jobs'
 					&& this.$refs['home-menu']['activeIndex'] != 'newProject') {
 					this._GLOBAL.projectIndex = this.$refs['home-menu']['activeIndex'];
-					//console.log(this._GLOBAL.projectIndex);
 				}
 			}
 		},
