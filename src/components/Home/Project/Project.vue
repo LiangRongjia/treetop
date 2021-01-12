@@ -27,7 +27,7 @@
 import ProjectRequire from './Require/Require.vue'
 import ProjectSprint from './Sprint/Sprint.vue'
 import ProjectProgress from './Progress/Progress.vue'
-import ProjectDefect from './Defect.vue'
+import ProjectDefect from './Defect/Defect.vue'
 import ProjectBasic from './Basic/Basic.vue'
 import ProjectTeam from './Team.vue'
 
