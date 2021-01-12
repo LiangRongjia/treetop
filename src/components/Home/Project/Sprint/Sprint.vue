@@ -18,7 +18,8 @@
       :startDate="sprintsList[sprintIndex].startDate"
       :endDate="sprintsList[sprintIndex].endDate"
       :description="sprintsList[sprintIndex].description"
-      @editSprintInfo="editSprintInfo"/>
+      @editSprintInfo="editSprintInfo"
+      @deleteSptint="deleteSptint"/>
     <list-card class="sprint__card"
       title="Requires"
       @add="addRequires"
@@ -88,7 +89,7 @@ export default{
       isAddMeeting: false,
       isNewSprint: false,
       newMeeting: { type: '', date: '', description: '', attachment: '', },
-      newSprint: { title:'', description: '', startDate: '', endDate:'', projectID: this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].ID },
+      newSprint: { title:'', description: '', startDate: '', endDate:'' },
       sprintsList: [{ ID: '', title: '', description: '', start: '', end: '' }],
       sprintIndex: 0,
       requiresFields: [ 'title', 'type', 'kind', 'priority', 'description', 'endDate', 'stitle' ],
@@ -209,28 +210,24 @@ export default{
       newSprintInfo.endDate = data.endDate
       newSprintInfo.description = data.description
       this.axios.post(url, newSprintInfo, config).then((response) => {
-        console.log(response)
         if(response.data.message == '成功'){
           this.getSprints()
         }
       })
       url = this._GLOBAL.baseUrl + '/sprint/updateSpEdByID'
       this.axios.post(url, newSprintInfo, config).then((response) => {
-        console.log(response)
         if(response.data.message == '成功'){
           this.getSprints()
         }
       })
       url = this._GLOBAL.baseUrl + '/sprint/updateSpSdByID'
       this.axios.post(url, newSprintInfo, config).then((response) => {
-        console.log(response)
         if(response.data.message == '成功'){
           this.getSprints()
         }
       })
       url = this._GLOBAL.baseUrl + '/sprint/updateSpTitleByID'
       this.axios.post(url, newSprintInfo, config).then((response) => {
-        console.log(response)
         if(response.data.message == '成功'){
           this.getSprints()
         }
@@ -240,10 +237,22 @@ export default{
       var url = this._GLOBAL.baseUrl + '/sprint/createSprint'
       var config = { emulateJSON: true }
       var postData = this.newSprint
+      postData.projectID = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].ID
       this.axios.post(url, postData, config).then((response) => {
         if(response.data.message == '成功'){
-          console.log(response)
           this.isNewSprint = false
+          this.getSprints()
+        }
+      })
+    },
+    deleteSptint () {
+      var params = 'ID=' + this.sprintsList[this.sprintIndex].ID
+      var url = this._GLOBAL.baseUrl + '/sprint/delSpByID?' + params
+      var config = { emulateJSON: true }
+      var postData = new Object()
+      this.axios.post(url, postData, config).then((response) => {
+        if(response.data.message == '成功'){
+          this.sprintIndex = 0
           this.getSprints()
         }
       })

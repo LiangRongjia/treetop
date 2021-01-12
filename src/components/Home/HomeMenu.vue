@@ -66,16 +66,6 @@
 				projectsList: this._GLOBAL.ProjectList
 			}
 		},
-		watch: {
-			// 维护全局变量 projectID
-			$route(to, from) {
-				if (this.$refs['home-menu']['activeIndex'] != 'my-info'
-					&& this.$refs['home-menu']['activeIndex'] != 'my-jobs'
-					&& this.$refs['home-menu']['activeIndex'] != 'newProject') {
-					this._GLOBAL.projectIndex = this.$refs['home-menu']['activeIndex'];
-				}
-			}
-		},
 		mounted() {
 			this.$router.replace('/' + this.userName + '/my-jobs')
 		},
@@ -86,6 +76,7 @@
 			// 维护路径 this.$route.params.projectName
 			// 进入某项目页面
 			toProject(project) {
+        this._GLOBAL.projectIndex = this.$refs['home-menu']['activeIndex']
 				this.$router.push('/' + this.userName + '/' + project.name)
 			},
 			// 进入某工作页面

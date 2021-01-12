@@ -26,7 +26,8 @@ Vue.prototype._GLOBAL = {
     name: '',
     avatar: ''
   },
-  ProjectList:[]
+  ProjectList:[],
+  projectIndex: 0
 }
 
 Vue.prototype.$eventBus = new Vue({

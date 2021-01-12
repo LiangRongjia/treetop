@@ -26,6 +26,7 @@
       <h1>Description</h1>
       <el-input v-model="sprintInfo.description" type="textarea"></el-input>
       <div slot="footer" class="dialog-footer">
+        <el-button @click="deleteSptint">删除迭代</el-button>
         <el-button @click="isSprintEditting = false">取消</el-button>
         <el-button type="primary" @click="confirmEdit">确定</el-button>
       </div>
@@ -75,6 +76,10 @@ export default {
       this.isSprintEditting = false
       var newSptintInfo = this.sprintInfo
       this.$emit('editSprintInfo', newSptintInfo)
+    },
+    deleteSptint () {
+      this.isSprintEditting = false
+      this.$emit('deleteSptint')
     }
   }
 }

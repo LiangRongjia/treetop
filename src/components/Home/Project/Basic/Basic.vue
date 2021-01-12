@@ -48,8 +48,11 @@
 		},
 		created:function(){
 			this.func();
-			
+
 		},
+    mounted () {
+      this.func()
+    },
 		methods: {
 			func() {
 				this.basic.name = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].name;
@@ -59,7 +62,7 @@
 				this.basic.end = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].endDate;
 				this.basic.state = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].state;
 			}
-			
+
 // 			addRequires() {
 // 				this.$alert('Add a require', 'dialog', {
 // 					confirmButtonText: 'OK'

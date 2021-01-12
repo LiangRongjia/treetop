@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button type="text" id="new_reqt" style="margin-left:1100px" @click="isCreate=1">+ New</el-button>
+    <el-button type="text" id="new_reqt" style="margin-left:1100px" @click="isCreate=true">+ New</el-button>
     <el-card class="reqt_card">
       <el-table :data="reqtList" style="width: 100% " max-height="560px" @row-click="change">
         <el-table-column type="index" width="50"></el-table-column>
@@ -206,14 +206,14 @@
 
 <script>
 export default {
-  name: "ProjectSprint",
+  name: "ProjectRequire",
   data() {
     return {
       currentID: 0,
       pID: 1,
-      isForm: 0,
-      isCreate: 0,
-      isTask: 0,
+      isForm: false,
+      isCreate: false,
+      isTask: false,
       sprintList: [],
       reqtList: [],
       ruleForm: {},
@@ -263,7 +263,7 @@ export default {
   },
   methods: {
     change(row) {
-      this.isForm = 1;
+      this.isForm = true;
       this.ruleForm = row;
     },
     pri(pri) {
@@ -316,7 +316,7 @@ export default {
         .then((response) => {
           if (response.data.message == "成功") {
             this.taskList = response.data.data.task;
-            this.isTask = 1;
+            this.isTask = true;
           }
         })
         .catch(function (error) {
@@ -349,7 +349,7 @@ export default {
             )
             .then((response) => {
               if (response.data.message == "成功") {
-                this.isForm = 0;
+                this.isForm = false;
                 this.show();
               }
             })
@@ -386,7 +386,7 @@ export default {
             .then((response) => {
               if (response.data.message == "成功") {
                 this.show();
-                this.isCreate = 0;
+                this.isCreate = false;
                 this.createForm = [];
               }
             })

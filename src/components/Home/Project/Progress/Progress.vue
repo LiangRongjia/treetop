@@ -34,8 +34,8 @@
         ></el-table-column>
         <el-table-column prop="description" label="任务描述" width="200" align="center"></el-table-column>
       </el-table>
-    </el-card>		
-    
+    </el-card>
+
 
     <el-dialog class="form_card" title="Change Taskinfo"
       :visible.sync="isForm"
@@ -146,11 +146,11 @@
         </el-form-item>
       </el-form>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="tocreate = 0">取 消</el-button>
+          <el-button @click="tocreate = false">取 消</el-button>
           <el-button type="primary" @click="createtask">确 定</el-button>
         </span>
     </el-dialog>
-    
+
   </div>
 </template>
 
@@ -170,13 +170,13 @@ export default{
       // },
       userID: 2,
       pID: 1,
-      isForm: 0,
-      tocreate: 0,
+      isForm: false,
+      tocreate: false,
       sprintList: [],
       taskList: [],
       ruleForm: {},
       sprintList:{},
-      reqtlist:{},
+      reqtList:[],
       createForm: {
         userID:1,
         title:"",
@@ -234,10 +234,10 @@ export default{
   },
   methods: {
     create(){
-      this.tocreate=1;
+      this.tocreate=true;
     },
     change(row) {
-      this.isForm = 1;
+      this.isForm = true;
       this.ruleForm=row;
     },
     pri(pri){
@@ -263,7 +263,7 @@ export default{
           console.log(error);
         });
     },
-    
+
     filterTag(value, row) {
       return row.tag === value;
     },
@@ -304,7 +304,7 @@ export default{
           console.log(response);
           if (response.data.code == 20000) {
             this.$alert("修改成功！");
-            this.isForm=0;
+            this.isForm=false;
           }
         })
         .catch(function (error) {
@@ -321,7 +321,7 @@ export default{
         .then((response) => {
           if (response.data.code == 20000) {
             this.$alert("创建成功！新建任务id为"+response.data.data.ID);
-            this.tocreate=0;
+            this.tocreate=false;
           }
         })
         .catch(function (error) {
@@ -337,7 +337,6 @@ export default{
           if (response.data.message == "成功") {
             this.sprintList = response.data.data.spList;
           }
-          console.log(this.sprintList);
         })
         .catch(function (error) {
           console.log(error);
@@ -352,7 +351,6 @@ export default{
           if (response.data.message == "成功") {
             this.reqtList = response.data.data.reqtList;
           }
-          console.log(this.reqtList);
         })
         .catch(function (error) {
           console.log(error);
