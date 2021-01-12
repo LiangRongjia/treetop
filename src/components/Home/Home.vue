@@ -16,7 +16,7 @@ export default {
     return {
       // userID 依赖于全局变量
       userID: this._GLOBAL.userObj.ID,
-      userName: this._GLOBAL.userObj.name,
+      userName: this._GLOBAL.userObj.name
     }
   }
 }

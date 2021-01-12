@@ -10,7 +10,7 @@
       <el-tab-pane label="Require" name="require">
         <project-require :projectID="projectID"/>
       </el-tab-pane>
-      <el-tab-pane label="Task" name="progress">
+      <el-tab-pane label="Progress" name="progress">
         <project-progress :projectID="projectID"/>
       </el-tab-pane>
       <el-tab-pane label="Defect" name="defect">
@@ -21,11 +21,12 @@
 </template>
 
 <script>
-import ProjectRequire from './Require.vue'
+import ProjectRequire from './Require/Require.vue'
 import ProjectSprint from './Sprint/Sprint.vue'
-import ProjectProgress from './Progress.vue'
+import ProjectProgress from './Progress/Progress.vue'
 import ProjectDefect from './Defect.vue'
 import ProjectBasic from './Basic/Basic.vue'
+
 /* 普通情况下，组件使用 props 传参
  * 本组件由于用于 route-view，无法传动态参数（静态参数可传，但这里需要动态参数）
  * 故使用全局变量传参

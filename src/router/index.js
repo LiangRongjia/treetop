@@ -3,8 +3,8 @@ import Router from 'vue-router'
 
 import Login from '@/components/Login'
 import Home from '@/components/Home/Home'
-import MyTask from '@/components/Home/MyTask'
-import MyMessage from '@/components/Home/MyMessage'
+import MyJobs from '@/components/Home/MyJobs/MyJobs'
+import MyInfo from '@/components/Home/MyInfo/MyInfo'
 import NewProject from '@/components/Home/NewProject/NewProject'
 import Project from '@/components/Home/Project/Project'
 
@@ -40,17 +40,17 @@ export default new Router({
       component: Home,
       children: [
         {
-          path: 'my-task',
-          component: MyTask
+          path: 'my-jobs',
+          component: MyJobs
         },
         {
-          path: 'my-message',
-          component: MyMessage
+          path: 'my-info',
+          component: MyInfo
         },
-				{
-					path: 'newProject',
-					component: NewProject
-				},
+        {
+          path: 'newProject',
+          component: NewProject
+        },
         {
           path: ':projectName',
           component: Project

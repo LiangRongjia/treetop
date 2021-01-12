@@ -4,17 +4,17 @@
       <el-option
         v-for="(item, index) in sprintsList"
         :key="index"
-        :label="index + 1 + ' : ' + item.name"
+        :label="index + 1 + ' : ' + item.title"
         :value="index">
       </el-option>
     </el-select>
     <sprint-info class="sprint__card"
-      :name="sprint.name"
-      :start="sprint.start"
-      :end="sprint.end"
-      :description="sprint.description"/>
+      :title="sprintsList[sprintIndex].title"
+      :startDate="sprintsList[sprintIndex].startDate"
+      :endDate="sprintsList[sprintIndex].endDate"
+      :description="sprintsList[sprintIndex].description"/>
     <list-card class="sprint__card"
-      title="Require"
+      title="Requires"
       @add="addRequires"
       :data="requires"
       :fields="requiresFields"/>
@@ -28,18 +28,34 @@
       @add="addDefects"
       :data="defects"
       :fields="defectsFields"/>
-    <meetings class="sprint__card"/>
+    <meetings class="sprint__card"
+      @addMeeting="addMeeting"
+      :data="meetings"
+      :fields="meetingsFields"/>
+    <el-dialog class="sprint__add-meeting-dialog" title="Add Meeting"
+      :visible.sync="isAddMeeting"
+      :modal="false">
+      <h1>Type</h1>
+      <el-input v-model="newMeeting.type" placeholder="请输入内容"></el-input>
+      <h1>Date</h1>
+      <el-date-picker v-model="newMeeting.date" type="date"/>
+      <h1>Description</h1>
+      <el-input v-model="newMeeting.description" type="textarea" placeholder="请输入内容"></el-input>
+      <h1>Attachment</h1>
+      <p>{{newMeeting.attachment}}</p>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="isAddMeeting = false">取消</el-button>
+        <el-button type="primary" @click="isAddMeeting = false">确定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
 import ListCard from './ListCard.vue'
 import SprintInfo from './SprintInfo.vue'
 import Meetings from './Meetings.vue'
-/* 该组件依据当前项目名，获取所有迭代信息
- * 当前项目名从路径(或全局变量？])获取
- */
 export default{
-  name: 'ProjectSprint',
+  title: 'ProjectSprint',
   components: {
     'list-card': ListCard,
     'sprint-info': SprintInfo,
@@ -51,31 +67,40 @@ export default{
   ],
   data () {
     return {
+      isAddMeeting: false,
+      newMeeting:{
+        type: '',
+        date: '',
+        description: '',
+        attachment: '',
+      },
       sprintsList: [
-        { ID: 1, name: 'firstSprint' },
-        { ID: 2, name: 'secondSprint' }
+        { ID: 1, title: 'firstSprint' },
+        { ID: 2, title: 'secondSprint' }
       ],
       sprintIndex: 0,
+      sprinyID: 0,
       sprint: {
         ID: 1,
-        name: 'firstSprint',
+        title: 'firstSprint',
         description: 'firstSprint\'s description',
         start: '2020/12/27',
         end: '2020/12/28'
       },
-      requiresFields: [ 'name', 'state', 'description' ],
-      tasksFields: [ 'name', 'state', 'host', 'description' ],
-      defectsFields: ['name', 'state', 'description'],
+      requiresFields: [ 'title', 'state', 'description' ],
+      tasksFields: [ 'title', 'state', 'host', 'description' ],
+      defectsFields: ['title', 'state', 'description'],
+      meetingsFields: ['type', 'date', 'description', 'attachment'],
       requires: [
         {
           ID: 1,
-          name: 'require1',
+          title: 'require1',
           state: 'done',
           desciption: 'require1 description'
         },
         {
           ID: 3,
-          name: 'require3',
+          title: 'require3',
           state: 'done',
           desciption: 'require3 description'
         }
@@ -83,14 +108,14 @@ export default{
       tasks: [
         {
           ID: 1,
-          name: 'task1',
+          title: 'task1',
           state: 'done',
           host: 'liangrongjia',
           desciption: 'task1 description'
         },
         {
           ID: 3,
-          name: 'task2',
+          title: 'task2',
           state: 'done',
           host: 'liangrongjia',
           desciption: 'task2 description'
@@ -99,9 +124,25 @@ export default{
       defects: [
         {
           ID: 3,
-          name: 'defect2',
+          title: 'defect2',
           state: 'done',
           desciption: 'defect2 description'
+        }
+      ],
+      meetings: [
+        {
+        ID: 1,
+        type: "Require",
+        description: 'Description of meetings 1',
+        date: '2020.12.09',
+        attachment: 'attachment'
+        },
+        {
+          ID: 2,
+          type: "Require",
+          description: 'Description of meetings 2',
+          date: '2020.12.09',
+          attachment: 'attachment'
         }
       ]
     }
@@ -116,7 +157,21 @@ export default{
       this.requires = this.requires
       this.tasks = this.tasks
       this.defects = this.defects
+    },
+    sprintIndex (to, from){
+      this.getRequires()
+      this.getTasks()
+      this.getDefects()
+      this.getMeetings()
     }
+  },
+  mounted () {
+    this.getSprints()
+    // 包含了回调：
+    // this.getRequires()
+    // this.getTasks()
+    // this.getDefects()
+    // this.getMeetings()
   },
   methods: {
     addRequires () {
@@ -127,6 +182,70 @@ export default{
     },
     addDefects () {
       this.$alert('Add a defect', 'dialog', { confirmButtonText: 'OK' })
+    },
+    addMeeting () {
+      this.isAddMeeting = true
+    },
+    getSprints () {
+      var projectID = 1 // this.projectID
+      this.axios
+      .post('http://39.97.175.119:8801/sprint/getSpListByPID?ID=' + projectID)
+      .then((response) => {
+        if(response.data.message == '成功'){
+          console.log('getSprints response:', response)
+          if(response.data.data.reqtList.length > 0){
+            this.sprintsList = response.data.data.reqtList
+            // this.getRequires()
+            // this.getTasks()
+            // this.getDefects()
+            // this.getMeetings()
+          }
+        }
+      })
+    },
+    getRequires () {
+      var sprintID = 1 // this.sprintsList[sprintIndex].ID
+      this.axios
+      .post('http://39.97.175.119:8801/requirement/getReqtListBySID?ID')
+      .then((response) => {
+        console.log('getRequires:', response)
+        if(response.data.message == '成功'){
+          this.requires = response.data.data.reqtList
+        }
+      })
+    },
+    getDefects () {
+      var sprintID = 1 // this.sprintsList[sprintIndex].ID
+      this.axios
+      .post('http://39.97.175.119:8801/defect/getDefListBySID?ID')
+      .then((response) => {
+        console.log('getDefects:',response)
+        if(response.data.message == '成功'){
+          this.defects = response.data.data.reqtList
+        }
+      })
+    },
+    getTasks () {
+      var sprintID = 1 // this.sprintsList[sprintIndex].ID
+      this.axios
+      .post('http://39.97.175.119:8801/??')
+      .then((response) => {
+        console.log('getTasks: ', response)
+        if(response.data.message == '成功'){
+          this.tasks = response.data.data.reqtList
+        }
+      })
+    },
+    getMeetings () {
+      var sprintID = 1 // this.sprintsList[sprintIndex].ID
+      this.axios
+      .post('http://39.97.175.119:8801/??')
+      .then((response) => {
+        console.log('getTasks: ', response)
+        if(response.data.message == '成功'){
+          this.defects = response.data.data.reqtList
+        }
+      })
     }
   }
 }
@@ -135,5 +254,9 @@ export default{
 <style>
 .sprint__card{
   margin: 0px 24px 24px 24px;
+}
+.sprint__add-meeting-dialog h1{
+  font-size: 18px;
+  padding: 12px 0px;
 }
 </style>
