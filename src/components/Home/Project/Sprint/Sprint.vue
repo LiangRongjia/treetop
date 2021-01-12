@@ -87,7 +87,7 @@ export default{
         start: '2020/12/27',
         end: '2020/12/28'
       },
-      requiresFields: [ 'title', 'state', 'description' ],
+      requiresFields: [ 'title', 'type', 'kind', 'priority', 'description', 'endDate', 'stitle' ],
       tasksFields: [ 'title', 'state', 'host', 'description' ],
       defectsFields: ['title', 'state', 'description'],
       meetingsFields: ['type', 'date', 'description', 'attachment'],
@@ -195,7 +195,7 @@ export default{
           console.log('getSprints response:', response)
           if(response.data.data.reqtList.length > 0){
             this.sprintsList = response.data.data.reqtList
-            // this.getRequires()
+             this.getRequires()
             // this.getTasks()
             // this.getDefects()
             // this.getMeetings()

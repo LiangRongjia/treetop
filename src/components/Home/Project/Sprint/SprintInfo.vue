@@ -20,7 +20,7 @@
       :visible.sync="isSprintEditting"
       :modal="false">
       <h1>Name</h1>
-      <el-input v-model="sprintInfo.title"placeholder="请输入内容"></el-input>
+      <el-input v-model="sprintInfo.title"></el-input>
       <h1>Start</h1>
       <el-date-picker v-model="sprintInfo.startDate" type="date"/>
       <h1>End</h1>
