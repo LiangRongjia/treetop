@@ -230,7 +230,7 @@ export default{
   },
   watch:{
     projectID(to, from){
-      this.pID = to
+      this.pID = this._GLOBAL.ProjectList[to].ID
       this.show()
     }
   },

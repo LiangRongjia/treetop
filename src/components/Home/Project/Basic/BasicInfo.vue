@@ -121,6 +121,12 @@
 				})
 				.then((response) => {
 					if (response.data.message == '成功') {
+            this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].name = this.form.name;
+            this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].host_ID = this.form.host_name;
+            this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].description = this.form.description;
+            this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].startDate = this.form.start;
+            this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].endDate = this.form.end;
+            this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].state = this.form.state;
 						alert('Edit successfully!');
 					} else {
 						alert('Edit fail!');
