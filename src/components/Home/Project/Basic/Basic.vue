@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<basic-info class="basic__card" :name="basic.name" :host_name="basic.host_name" :start="basic.start" :end="basic.end"
+		<basic-info class="basic__card" :name="basic.name" :hostname="basic.hostname" :start="basic.start" :end="basic.end"
 		 :description="basic.description" :state="basic.state" />
 		<basic-sprint class="basic__card" :name="sprint.name" :state="sprint.state" :time="sprint.time" />
 		<basic-rtd class="basic__card" :count="rtd.count" :already="rtd.already" :processing="rtd.processing" :nostarting="rtd.nostarting"
@@ -29,7 +29,7 @@
 			return {
 				basic: {
 					name: this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].name,
-					host_name: this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].host_ID,
+					hostname: this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].hostName,
 					description: this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].description,
 					start: this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].startDate,
 					end: this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].endDate,
@@ -55,7 +55,7 @@
 			// 若 projectID 变更，更新页面
 			projectID(to, from) {
 				this.basic.name = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].name;
-				this.basic.host_name = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].host_ID;
+				this.basic.hostname = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].hostName;
 				this.basic.description = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].description;
 				this.basic.start = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].startDate;
 				this.basic.end = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].endDate;
@@ -66,7 +66,6 @@
 		},
 		created: function() {
 			this.func();
-
 		},
     mounted () {
       this.func()
@@ -74,7 +73,7 @@
 		methods: {
 			func() {
 				this.basic.name = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].name;
-				this.basic.host_name = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].host_ID;
+				this.basic.hostname = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].hostName;
 				this.basic.description = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].description;
 				this.basic.start = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].startDate;
 				this.basic.end = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].endDate;

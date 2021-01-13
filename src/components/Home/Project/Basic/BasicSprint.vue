@@ -45,9 +45,10 @@
 							var list = response.data.data.spList;
 							if (list.length > 0) {
 								this.name = list[list.length - 1].title;
+								this.state = 'In progress';
 								this.time = list[list.length - 1].endDate;
 							} else {
-								this.name = null;
+								
 							}
 							// console.log(this.isHost);
 						}
