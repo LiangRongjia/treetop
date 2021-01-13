@@ -66,6 +66,9 @@
 		},
 		created: function() {
 			this.func();
+      this.$eventBus.$on('refreshbi',() => {
+        this.func()
+      })
 		},
     mounted () {
       this.func()
