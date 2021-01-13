@@ -20,11 +20,14 @@ Vue.prototype._GLOBAL = {
   userID: 1,
   projectID: 1,
   imgBaseUrl: 'http://39.97.175.119:8080/imgs/',
+  baseUrl: '/api', // 'http://39.97.175.119:8801'
   userObj: {
     ID: 0,
     name: '',
     avatar: ''
-  }
+  },
+  ProjectList:[],
+  projectIndex: 0
 }
 
 Vue.prototype.$eventBus = new Vue({

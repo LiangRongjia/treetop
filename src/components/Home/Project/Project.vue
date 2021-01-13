@@ -5,7 +5,7 @@
         <project-basic :projectID="projectID"/>
       </el-tab-pane>
       <el-tab-pane label="Sprint" name="sprint">
-        <project-sprint :projectID="projectID"/>
+        <project-sprint :projectIndex="projectID"/>
       </el-tab-pane>
       <el-tab-pane label="Require" name="require">
         <project-require :projectID="projectID"/>
@@ -27,7 +27,7 @@
 import ProjectRequire from './Require/Require.vue'
 import ProjectSprint from './Sprint/Sprint.vue'
 import ProjectProgress from './Progress/Progress.vue'
-import ProjectDefect from './Defect.vue'
+import ProjectDefect from './Defect/Defect.vue'
 import ProjectBasic from './Basic/Basic.vue'
 import ProjectTeam from './Team.vue'
 

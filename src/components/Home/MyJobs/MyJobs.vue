@@ -1,17 +1,13 @@
 <template>
   <div>
-    <list-card class="my-jobs__card"
-      title="My Requires"
-      :data="requires"
-      :fields="requiresFields"/>
-    <list-card class="my-jobs__card"
-      title="My Tasks"
-      :data="tasks"
-      :fields="tasksFields"/>
-    <list-card class="my-jobs__card"
-      title="My Defects"
-      :data="defects"
-      :fields="defectsFields"/>
+	<list-card class="my-jobs__card"
+		title="My Tasks"
+		:data="tasks"
+		:fields="tasksFields"/>
+	<list-card class="my-jobs__card"
+		title="My Defects"
+		:data="defects"
+		:fields="defectsFields"/>
   </div>
 </template>
 
@@ -20,56 +16,39 @@ import ListCard from './ListCard.vue'
 export default {
   title: 'MyJobs',
   components: {
-    'list-card':ListCard
+    'list-card': ListCard
   },
   data () {
     return {
-      requiresFields: [ 'projectName', 'title', 'state', 'description' ],
-      tasksFields: [ 'projectName', 'title', 'state', 'host', 'description' ],
-      defectsFields: [ 'projectName', 'title', 'state', 'description'],
-      requires: [
-        {
-          projectName: 1,
-          ID: 1,
-          title: 'require1',
-          state: 'done',
-          desciption: 'require1 description'
-        },
-        {
-          projectName: 1,
-          ID: 3,
-          title: 'require3',
-          state: 'done',
-          desciption: 'require3 description'
+      requiresFields: [ 'title', 'type', 'kind', 'priority', 'description', 'endDate', 'stitle' ],
+      tasksFields: [ 'title', 'state', 'username', 'startDate', 'endDate', 'priority', 'description' ],
+      defectsFields: ['title', 'type', 'state', 'endDate', 'description'],
+      meetingsFields: ['type', 'date', 'description', 'attachment'],
+      requires: [{ title: '', type: '', kind: '', priority: '', description: '', endDate: '', stitle: '', state: '' }],
+      tasks: [{ title: '', state: '', username: '', startDate: '', endDate: '', priority: '', description: '' }],
+      defects: [{ title: '', type: '', state: '', endDate: '', description: '' }],
+    }
+  },
+  mounted () {
+    this.getData()
+  },
+  methods:{
+    getData () {
+      // 'headers': {'Access-Control-Allow-Origin': '*','access-control-allow-credentials': 'true'}
+      // this.axios.setRequestHeader()
+      var userID = this._GLOBAL.userObj.ID
+      var url = this._GLOBAL.baseUrl + '/task/getTaskListByUid?userid=' + userID
+      this.axios.get(url).then((response) => {
+        if(response.data.message == '成功'){
+          this.tasks = response.data.data.task
         }
-      ],
-      tasks: [
-        {
-          projectName: 1,
-          ID: 1,
-          title: 'task1',
-          state: 'done',
-          host: 'liangrongjia',
-          desciption: 'task1 description'
-        },
-        {
-          projectName: 1,
-          ID: 3,
-          title: 'task2',
-          state: 'done',
-          host: 'liangrongjia',
-          desciption: 'task2 description'
+      })
+      url = this._GLOBAL.baseUrl + '/defect/getDefListByUID?ID=1'// + userID
+      this.axios.post(url).then((response) => {
+        if(response.data.message == '成功'){
+          this.defects = response.data.data.defectList
         }
-      ],
-      defects: [
-        {
-          projectName: 1,
-          ID: 3,
-          title: 'defect2',
-          state: 'done',
-          desciption: 'defect2 description'
-        }
-      ],
+      })
     }
   }
 }

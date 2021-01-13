@@ -103,7 +103,7 @@
 					.then((response) => {
 						if (response.data.message == '成功') {
 							this.isHost = response.data.data.isHost;
-							console.log(this.isHost);
+							// console.log(this.isHost);
 						}
 					})
 			},

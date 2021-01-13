@@ -4,11 +4,8 @@
       <span>{{title}}</span>
     </div>
     <div class="content">
-      <el-card class="chart" shadow="never">
-        <div>[EChart饼图，总数、已完成、未完成]</div>
-      </el-card>
       <el-card class="list" shadow="never">
-        <el-table :data="data" stripe>
+        <el-table :data="data" stripe class="table">
           <el-table-column v-for="(item, index) in fields" :key="index" :prop="item" :label="item"></el-table-column>
         </el-table>
       </el-card>
@@ -66,5 +63,12 @@ export default {
 .list{
   flex-shrink: 1;
   flex-grow: 1;
+}
+.table{
+	max-height: 360px;
+  overflow: auto;
+}
+.table *{
+  width: max-content;
 }
 </style>

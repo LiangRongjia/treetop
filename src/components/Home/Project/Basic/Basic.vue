@@ -62,8 +62,11 @@
 		},
 		created:function(){
 			this.func();
-			
+
 		},
+    mounted () {
+      this.func()
+    },
 		methods: {
 			func() {
 				this.basic.name = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].name;
