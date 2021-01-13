@@ -151,6 +151,8 @@ export default{
     justify-content: center;
     width: 100%;
     height: 100%;
+    background-image: url('../assets/OIP.jpg');
+    background-size: cover;
   }
   .login__card{
     width: 300px;
