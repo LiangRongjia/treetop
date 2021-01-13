@@ -6,7 +6,7 @@
 				<el-button class="header-button" type="text" @click="isInviting = true" style="float: right; padding: 3px 0">Invite</el-button>
 			</div>
 			<el-card class="list" shadow="never">
-				<el-table :data="data" stripe>
+				<el-table :data="data" :key="index" stripe>
 					<el-table-column prop="ID" label="ID" align="center"></el-table-column>
 					<el-table-column prop="name" label="Name" align="center"></el-table-column>
 				</el-table>
@@ -30,7 +30,11 @@
 				isInviting: false,
 				userid: '',
 				data: [],
+				index: 1,
 			}
+		},
+		created: function() {
+			this.show();
 		},
 		methods: {
 			handleClose(done) {
@@ -51,6 +55,19 @@
 					.then((response) => {
 						if (response.data.message == '成功') {
 							this.$alert('Invite successfully');
+						}
+					})
+			},
+			show() {
+				this.axios.get('http://39.97.175.119:8801/project/getMemberListByPID', {
+						params: {
+							ID: this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].ID,
+						}
+					})
+					.then((response) => {
+						if (response.data.message == '成功') {
+							this.data = response.data.data.memberList;
+							console.log(data);
 						}
 					})
 			}
