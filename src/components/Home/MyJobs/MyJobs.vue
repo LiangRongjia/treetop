@@ -21,7 +21,7 @@ export default {
   data () {
     return {
       requiresFields: [ 'title', 'type', 'kind', 'priority', 'description', 'endDate', 'stitle' ],
-      tasksFields: [ 'title', 'state', 'username', 'startDate', 'endDate', 'priority', 'description' ],
+      tasksFields: [ 'title', 'state', 'startDate', 'endDate', 'priority', 'description' ],
       defectsFields: ['title', 'type', 'state', 'endDate', 'description'],
       meetingsFields: ['type', 'date', 'description', 'attachment'],
       requires: [{ title: '', type: '', kind: '', priority: '', description: '', endDate: '', stitle: '', state: '' }],
