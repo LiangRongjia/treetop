@@ -7,10 +7,10 @@
 					<div slot="header">Current sprint</div>
 					<p>{{name}}</p><br />
 				</el-card>
-				<el-card shadow="never">
+				<!-- <el-card shadow="never">
 					<div slot="header">Current sprint status</div>
 					<p>{{state}}</p>
-				</el-card>
+				</el-card> -->
 				<el-card shadow="never">
 					<div slot="header">Deadline of current iteration</div>
 					<p>{{time}}</p>
