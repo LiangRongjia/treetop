@@ -20,9 +20,14 @@
 			<el-col :span="12">
 				<el-card>
 					<div slot="header">Project distribution</div>
-					<el-card class="chart" shadow="never">
-						<div>[EChart饼图，需求、任务、缺陷]</div>
-					</el-card>
+					<el-col :span="12" :offset="2">
+					<div id="main" style="width: 200px; height:168px; align-content: center;"></div>
+					</el-col>
+					<el-col :span="8" :offset="1">
+						<p>Require: {{rCnt}}</p><br />
+						<p>Task: {{count}}</p><br />
+						<p>Defect: {{dCnt}}</p><br />
+					</el-col>
 				</el-card>
 			</el-col>
 		</el-row>
@@ -36,15 +41,17 @@
 			'already',
 			'processing',
 			'nostarting',
-			'percentage'
+			'percentage',
+			'rCnt',
+			'dCnt'
 		],
 		data() {
 			return {
-				count: 0,
-				already: 0,
-				processing: 0,
-				nostarting: 0,
-				percentage: 0,
+				// 				count: 0,
+				// 				already: 0,
+				// 				processing: 0,
+				// 				nostarting: 0,
+				// 				percentage: 0,
 				colors: [{
 						color: '#f56c6c',
 						percentage: 20
@@ -68,15 +75,31 @@
 				]
 			};
 		},
-		created:function(){
+		mounted() {
+			this.myEcharts();
+		},
+		created: function() {
 			//this.calculate();
+			this.myEcharts();
+		},
+		watch: {
+			// 若 projectID 变更，更新页面
+			rCnt(to, from) {
+				this.myEcharts();
+			},
+			dCnt(to, from) {
+				this.myEcharts();
+			},
+			count(to, from) {
+				this.myEcharts();
+			},
 		},
 		methods: {
 			calculate() {
-				this.axios.get("http://39.97.175.119:8801/task/getTaskListByPid?projectid=" + this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].ID)
+				this.axios.get("http://39.97.175.119:8801/task/getTaskListByPid?projectid=" + this._GLOBAL.ProjectList[this._GLOBAL
+						.projectIndex].ID)
 					.then((response) => {
 						if (response.data.message == "成功") {
-							console.log('342352356');
 							var taskList = response.data.data.task;
 							console.log(taskList);
 							this.count = 0;
@@ -96,7 +119,6 @@
 						console.log(error);
 					});
 			},
-
 			increase() {
 				this.percentage += 10;
 				if (this.percentage > 100) {
@@ -108,6 +130,47 @@
 				if (this.percentage < 0) {
 					this.percentage = 0;
 				}
+			},
+			myEcharts() {
+				// 基于准备好的dom，初始化echarts实例
+				//  var myChart = this.$echarts.init(document.getElementById('main'));
+				var myChart = require('echarts').init(document.getElementById('main'));
+				// 指定图表的配置项和数据
+				var option = {
+// 					title: {
+// 						text: ''
+// 					},
+ 					tooltip: {},
+// 					legend: {
+// 						data: ['销量']
+// 					},
+// 					xAxis: {
+// 						data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
+// 					},
+// 					yAxis: {},
+					series: [{
+						//name: '访问来源',
+						type: 'pie', // 设置图表类型为饼图
+						radius: '80%', // 饼图的半径，外半径为可视区尺寸（容器高宽中较小一项）的 55% 长度。
+						data: [ // 数据数组，name 为数据项名称，value 为数据项值
+							{
+								value: this.rCnt,
+								name: 'Require'
+							},
+							{
+								value: this.count,
+								name: 'Task'
+							},
+							{
+								value: this.dCnt,
+								name: 'Defect'
+							}
+						]
+					}]
+				};
+
+				// 使用刚指定的配置项和数据显示图表。
+				myChart.setOption(option);
 			}
 		}
 	}

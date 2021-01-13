@@ -1,8 +1,10 @@
 <template>
 	<div>
-		<basic-info class="basic__card" :name="basic.name" :host_name="basic.host_name" :start="basic.start" :end="basic.end" :description="basic.description" :state="basic.state"/>
-		<basic-sprint class="basic__card" :name="sprint.name" :state="sprint.state" :time="sprint.time"/>
-		<basic-rtd class="basic__card" :count="rtd.count" :already="rtd.already" :processing="rtd.processing" :nostarting="rtd.nostarting" :percentage="rtd.percentage"/>
+		<basic-info class="basic__card" :name="basic.name" :host_name="basic.host_name" :start="basic.start" :end="basic.end"
+		 :description="basic.description" :state="basic.state" />
+		<basic-sprint class="basic__card" :name="sprint.name" :state="sprint.state" :time="sprint.time" />
+		<basic-rtd class="basic__card" :count="rtd.count" :already="rtd.already" :processing="rtd.processing" :nostarting="rtd.nostarting"
+		 :percentage="rtd.percentage" :dCnt="rtd.dCnt" :rCnt="rtd.rCnt"/>
 	</div>
 </template>
 <script>
@@ -36,7 +38,7 @@
 				sprint: {
 					name: '',
 					state: '',
-					time:'',
+					time: '',
 				},
 				rtd: {
 					count: 0,
@@ -44,6 +46,8 @@
 					processing: 0,
 					nostarting: 0,
 					percentage: 0,
+					dCnt: 0,
+					rCnt: 0,
 				}
 			}
 		},
@@ -60,7 +64,7 @@
 				this.calculate();
 			}
 		},
-		created:function(){
+		created: function() {
 			this.func();
 
 		},
@@ -76,8 +80,9 @@
 				this.basic.end = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].endDate;
 				this.basic.state = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].state;
 			},
-			getSprintName () {
-				this.axios.post('http://39.97.175.119:8801/sprint/getSpListByPID?ID=' + this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].ID)
+			getSprintName() {
+				this.axios.post('http://39.97.175.119:8801/sprint/getSpListByPID?ID=' + this._GLOBAL.ProjectList[this._GLOBAL.projectIndex]
+						.ID)
 					.then((response) => {
 						if (response.data.message == '成功') {
 							var list = response.data.data.spList;
@@ -95,11 +100,11 @@
 					})
 			},
 			calculate() {
-				this.axios.get("http://39.97.175.119:8801/task/getTaskListByPid?projectid=" + this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].ID)
+				this.axios.get("http://39.97.175.119:8801/task/getTaskListByPid?projectid=" + this._GLOBAL.ProjectList[this._GLOBAL
+						.projectIndex].ID)
 					.then((response) => {
 						if (response.data.message == "成功") {
 							var taskList = response.data.data.task;
-							console.log(taskList);
 							this.rtd.count = 0;
 							this.rtd.already = 0;
 							this.rtd.processing = 0;
@@ -116,22 +121,43 @@
 					.catch(function(error) {
 						console.log(error);
 					});
+				this.axios.post("http://39.97.175.119:8801/requirement/getReqtListByPID?ID=" + this._GLOBAL.ProjectList[this._GLOBAL
+						.projectIndex].ID)
+					.then((response) => {
+						if (response.data.message == "成功") {
+							this.rtd.rCnt = response.data.data.reqtList.length;
+						}
+					})
+					.catch(function(error) {
+						console.log(error);
+					});
+				this.axios.post("http://39.97.175.119:8801/defect/getDefListByPID?ID=" + this._GLOBAL.ProjectList[this._GLOBAL
+						.projectIndex].ID)
+					.then((response) => {
+						if (response.data.message == "成功") {
+							this.rtd.dCnt = response.data.data.defectList.length;
+						}
+					})
+					.catch(function(error) {
+						console.log(error);
+					});
 			},
-// 			addRequires() {
-// 				this.$alert('Add a require', 'dialog', {
-// 					confirmButtonText: 'OK'
-// 				})
-// 			},
-// 			addTasks() {
-// 				this.$alert('Add a task', 'dialog', {
-// 					confirmButtonText: 'OK'
-// 				})
-// 			},
-// 			addDefects() {
-// 				this.$alert('Add a defect', 'dialog', {
-// 					confirmButtonText: 'OK'
-// 				})
-// 			}
+			
+			// 			addRequires() {
+			// 				this.$alert('Add a require', 'dialog', {
+			// 					confirmButtonText: 'OK'
+			// 				})
+			// 			},
+			// 			addTasks() {
+			// 				this.$alert('Add a task', 'dialog', {
+			// 					confirmButtonText: 'OK'
+			// 				})
+			// 			},
+			// 			addDefects() {
+			// 				this.$alert('Add a defect', 'dialog', {
+			// 					confirmButtonText: 'OK'
+			// 				})
+			// 			}
 		}
 	}
 </script>

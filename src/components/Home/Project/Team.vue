@@ -6,7 +6,7 @@
 				<el-button class="header-button" type="text" @click="isInviting = true" style="float: right; padding: 3px 0">Invite</el-button>
 			</div>
 			<el-card class="list" shadow="never">
-				<el-table :data="data" :key="index" stripe>
+				<el-table :data="data" stripe>
 					<el-table-column prop="ID" label="ID" align="center"></el-table-column>
 					<el-table-column prop="name" label="Name" align="center"></el-table-column>
 				</el-table>
@@ -24,13 +24,15 @@
 
 <script>
 	export default {
+		props: [
+			'list',
+		],
 		data() {
 			return {
 				isHost: true,
 				isInviting: false,
 				userid: '',
 				data: [],
-				index: 1,
 			}
 		},
 		created: function() {

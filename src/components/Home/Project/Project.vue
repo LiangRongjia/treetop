@@ -17,7 +17,7 @@
         <project-defect :projectID="projectID"/>
       </el-tab-pane>
 			<el-tab-pane label="Team" name="team">
-			  <project-team :projectID="projectID"/>
+			  <project-team :projectID="projectID" :list="list"/>
 			</el-tab-pane>
     </el-tabs>
   </div>
@@ -49,15 +49,31 @@ export default{
   data () {
     return {
       tab: 'basic',
-      projectID: this._GLOBAL.projectIndex
+      projectID: this._GLOBAL.projectIndex,
+			list: [],
     }
   },
   watch: {
     // 若路由路径变化，从全局变量刷新 projectID
     $route () {
       this.projectID = this._GLOBAL.projectIndex;
-    }
-  }
+    },
+		
+  },
+	methods: {
+		show() {
+			this.axios.get('http://39.97.175.119:8801/project/getMemberListByPID', {
+					params: {
+						ID: this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].ID,
+					}
+				})
+				.then((response) => {
+					if (response.data.message == '成功') {
+						this.list = response.data.data.memberList;
+					}
+				})
+			}
+	}
 }
 </script>
 
