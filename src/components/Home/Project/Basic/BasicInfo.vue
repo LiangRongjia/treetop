@@ -3,16 +3,16 @@
 		<el-card>
 			<div slot="header">
 				Basic Info
-				<el-button :v-show="isHost" @click="dialogVisible = true" style="float: right; padding: 3px 0" type="text">Edit</el-button>
+				<el-button :v-show="isHost" @click="editInfo" style="float: right; padding: 3px 0" type="text">Edit</el-button>
 			</div>
 			<div class="card-content">
 				<el-card shadow="never">
 					<div slot="header">Basic</div>
 					<p>Name : {{name}}</p><br />
-					<p>Leader : </p><br />
+					<p>Leader : {{hostname}}</p><br />
 					<p>Start : {{start}}</p><br />
 					<p>End : {{end}}</p><br />
-					<p>Current Status : {{state}}</p>
+					<p :key="index">Current Status : {{state}}</p>
 				</el-card>
 				<el-card shadow="never">
 					<div slot="header">Description</div>
@@ -26,17 +26,17 @@
 					<el-input v-model="form.name" autocomplete="off" style="width: 65%;"></el-input>
 				</el-form-item>
 				<el-form-item label="Start" :label-width="formLabelWidth">
-					<el-date-picker type="date" placeholder="Choose start date" v-model="form.date1" value-format="yyyy-MM-dd" style="width: 65%;"></el-date-picker>
+					<el-date-picker type="date" placeholder="Choose start date" v-model="form.start" value-format="yyyy-MM-dd" style="width: 65%;"></el-date-picker>
 				</el-form-item>
 				<el-form-item label="End" :label-width="formLabelWidth">
-					<el-date-picker type="date" placeholder="Choose end date" v-model="form.date2" value-format="yyyy-MM-dd" style="width: 65%;"></el-date-picker>
+					<el-date-picker type="date" placeholder="Choose end date" v-model="form.end" value-format="yyyy-MM-dd" style="width: 65%;"></el-date-picker>
 				</el-form-item>
 				<el-form-item label="Status" :label-width="formLabelWidth">
 					<el-select v-model="form.status" placeholder="Choose status">
-						<el-option label="Preparing" value="PR"></el-option>
-						<el-option label="In progress" value="ST"></el-option>
-						<el-option label="Completed" value="ED"></el-option>
-						<el-option label="Shilved" value="PS"></el-option>
+						<el-option label="Pending" value="Pending"></el-option>
+						<el-option label="In progress" value="In progress"></el-option>
+						<el-option label="Completed" value="Completed"></el-option>
+						<el-option label="Shilved" value="Shilved"></el-option>
 					</el-select>
 				</el-form-item>
 				<el-form-item label="Description" :label-width="formLabelWidth">
@@ -56,11 +56,11 @@
 		//name: 'BasicInfo',
 		props: [
 			'name',
-			'host_name',
+			'hostname',
 			'start',
 			'end',
 			'description',
-			'state'
+			'state',
 		],
 		data() {
 			return {
@@ -69,17 +69,24 @@
 				form: {
 					name: this.name,
 					status: this.state,
-					date1: this.start,
-					date2: this.end,
+					start: this.start,
+					end: this.end,
 					desc: this.description
 				},
 				formLabelWidth: '120px',
+				index: 1,
+			}
+		},
+		watch: {
+			state(to, from) {
+				console.log("state改了");
+				this.index++;
 			}
 		},
 		created: function() {
 			this.isHostF();
 			this.name = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].name;
-			this.host_name = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].host_ID;
+			this.hostname = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].hostName;
 			this.description = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].description;
 			this.start = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].startDate;
 			this.end = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].endDate;
@@ -92,6 +99,14 @@
 						done();
 					})
 					.catch(_ => {});
+			},
+			editInfo() {
+				this.dialogVisible = true;
+				this.form.name = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].name;
+				this.form.desc = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].description;
+				this.form.start = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].startDate;
+				this.form.end = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].endDate;
+				this.form.status = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].state;
 			},
 			isHostF() {
 				this.axios.get('http://39.97.175.119:8801/project/isPrjHost', {
@@ -128,11 +143,16 @@
             this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].endDate = this.form.end;
             this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].state = this.form.state;
 						alert('Edit successfully!');
+						this.name = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].name;
+						this.description = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].description;
+						this.start = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].startDate;
+						this.end = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].endDate;
+						this.state = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].state;
 					} else {
 						alert('Edit fail!');
 					}
 				})
-			}
+			},
 		}
 	}
 </script>
