@@ -26,6 +26,7 @@
 	export default {
 		props: [
 			'list',
+      'projectID'
 		],
 		data() {
 			return {
@@ -38,6 +39,11 @@
 		created: function() {
 			this.show();
 		},
+    watch:{
+      projectID(to, from){
+        this.show()
+      }
+    },
 		methods: {
 			handleClose(done) {
 				this.$confirm('Confirm?')
@@ -69,7 +75,6 @@
 					.then((response) => {
 						if (response.data.message == '成功') {
 							this.data = response.data.data.memberList;
-							console.log(data);
 						}
 					})
 			}

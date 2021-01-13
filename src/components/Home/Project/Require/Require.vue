@@ -207,6 +207,7 @@
 <script>
 export default {
   name: "ProjectRequire",
+  props: ['projectID'],
   data() {
     return {
       currentID: 0,
@@ -260,6 +261,12 @@ export default {
   created() {
     this.show();
     this.getSprintList();
+  },
+  watch:{
+    projectID(to, from){
+      this.pID = to
+      this.show()
+    }
   },
   methods: {
     change(row) {

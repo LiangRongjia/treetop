@@ -190,6 +190,7 @@
 <script>
 export default {
   name: "ProjectDefect",
+  props: ['projectID'],
   data() {
     return {
       currentID: 0,
@@ -234,6 +235,12 @@ export default {
     this.show();
     this.getSprintList();
     this.getUserList();
+  },
+  watch:{
+    projectID(to, from){
+      this.pID = to
+      this.show()
+    }
   },
   methods: {
     change(row) {

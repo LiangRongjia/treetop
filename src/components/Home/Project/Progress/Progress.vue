@@ -161,6 +161,7 @@ export default{
     components: {
     'progress-list': progresslist,
   },
+  props: ['projectID'],
   data() {
     return {
       // pickerOptions: {
@@ -226,6 +227,12 @@ export default{
         ],
       }
     };
+  },
+  watch:{
+    projectID(to, from){
+      this.pID = to
+      this.show()
+    }
   },
   created() {
     this.show();
