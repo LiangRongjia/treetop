@@ -4,6 +4,7 @@
   "description": "A Vue.js project",
   "author": "liangrongjia <liangrongjia999@foxmail.com>",
   "private": true,
+  "homepage": ".",
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
@@ -15,7 +16,7 @@
   },
   "dependencies": {
     "axios": "^0.21.1",
-    "echarts": "^5.0.0",
+    "echarts": "^4.9.0",
     "element-ui": "^2.14.1",
     "vue": "^2.5.2",
     "vue-axios": "^3.2.2",

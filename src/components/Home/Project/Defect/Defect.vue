@@ -189,9 +189,9 @@
 
 <script>
 export default {
-  name: "ProjectDefect",
+  name: 'ProjectDefect',
   props: ['projectID'],
-  data() {
+  data () {
     return {
       currentID: 0,
       pID: 1,
@@ -199,120 +199,120 @@ export default {
       isCreate: false,
       sprintList: [],
       defectList: [],
-      userList:[],
+      userList: [],
       ruleForm: {},
       createForm: {},
       rules: {
-        title: [{ required: true, message: "请输入缺陷标题", trigger: "blur" }],
+        title: [{ required: true, message: '请输入缺陷标题', trigger: 'blur' }],
         priority: [
-          { required: true, message: "请选择优先级", trigger: "change" },
+          { required: true, message: '请选择优先级', trigger: 'change' }
         ],
         state: [
           {
             required: true,
-            message: "请选择一个缺陷状态",
-            trigger: "change",
-          },
+            message: '请选择一个缺陷状态',
+            trigger: 'change'
+          }
         ],
         type: [
           {
             required: true,
-            message: "请选择一个缺陷类型",
-            trigger: "change",
-          },
+            message: '请选择一个缺陷类型',
+            trigger: 'change'
+          }
         ],
         endDate: [
           {
             required: true,
-            message: "请选择日期",
-            trigger: "change",
-          },
-        ],
-      },
-    };
+            message: '请选择日期',
+            trigger: 'change'
+          }
+        ]
+      }
+    }
   },
-  created() {
-    this.show();
-    this.getSprintList();
-    this.getUserList();
+  created () {
+    this.show()
+    this.getSprintList()
+    this.getUserList()
   },
-  watch:{
-    projectID(to, from){
+  watch: {
+    projectID (to, from) {
       this.pID = this._GLOBAL.ProjectList[to].ID
       this.show()
     }
   },
   methods: {
-    change(row) {
-      this.isForm = true;
-      this.ruleForm = row;
+    change (row) {
+      this.isForm = true
+      this.ruleForm = row
     },
-    pri(pri) {
+    pri (pri) {
       switch (pri) {
-        case "最高":
-          return "danger";
-        case "较高":
-          return "warning";
-        case "一般":
-          return "success";
-        case "较低":
-          return "primary";
-        case "最低":
-          return "info";
+        case '最高':
+          return 'danger'
+        case '较高':
+          return 'warning'
+        case '一般':
+          return 'success'
+        case '较低':
+          return 'primary'
+        case '最低':
+          return 'info'
       }
     },
-    show() {
+    show () {
       this.axios
-        .post("/api/defect/getDefListByPID?ID=" + this.pID, {
-          emulateJSON: true,
+        .post('/api/defect/getDefListByPID?ID=' + this.pID, {
+          emulateJSON: true
         })
         .then((response) => {
-          if (response.data.message == "成功") {
-            this.defectList = response.data.data.defectList;
+          if (response.data.message === '成功') {
+            this.defectList = response.data.data.defectList
           }
         })
         .catch(function (error) {
-          console.log(error);
-        });
+          console.log(error)
+        })
     },
-    getSprintList() {
+    getSprintList () {
       this.axios
-        .post("/api/sprint/getSpListByPID?ID=" + this.pID, {
-          emulateJSON: true,
+        .post('/api/sprint/getSpListByPID?ID=' + this.pID, {
+          emulateJSON: true
         })
         .then((response) => {
-          if (response.data.message == "成功") {
-            this.sprintList = response.data.data.spList;
+          if (response.data.message === '成功') {
+            this.sprintList = response.data.data.spList
           }
         })
         .catch(function (error) {
-          console.log(error);
-        });
+          console.log(error)
+        })
     },
-    getUserList() {
+    getUserList () {
       this.axios
-        .get("/api/project/getMemberListByPID?ID=" + this.pID, {
-          emulateJSON: true,
+        .get('/api/project/getMemberListByPID?ID=' + this.pID, {
+          emulateJSON: true
         })
         .then((response) => {
-          if (response.data.message == "成功") {
-            this.userList = response.data.data.memberList;
+          if (response.data.message === '成功') {
+            this.userList = response.data.data.memberList
           }
         })
         .catch(function (error) {
-          console.log(error);
-        });
+          console.log(error)
+        })
     },
-    filterTag(value, row) {
-      return row.priority === value;
+    filterTag (value, row) {
+      return row.priority === value
     },
-    submitForm(formName) {
+    submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert("submit!");
+          alert('submit!')
           this.axios
             .post(
-              "/api/defect/updateDefByID",
+              '/api/defect/updateDefByID',
               {
                 ID: this.ruleForm.ID,
                 title: this.ruleForm.title,
@@ -322,34 +322,34 @@ export default {
                 description: this.ruleForm.description,
                 endDate: this.ruleForm.endDate,
                 sprintID: this.ruleForm.sprintID,
-                userID:this.ruleForm.userID
+                userID: this.ruleForm.userID
               },
               {
-                emulateJSON: true,
+                emulateJSON: true
               }
             )
             .then((response) => {
-              if (response.data.message == "成功") {
-                this.isForm = false;
-                this.show();
+              if (response.data.message === '成功') {
+                this.isForm = false
+                this.show()
               }
             })
             .catch(function (error) {
-              console.log(error);
-            });
+              console.log(error)
+            })
         } else {
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     },
-    createDefect(formName) {
+    createDefect (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert("submit!");
+          alert('submit!')
           this.axios
             .post(
-              "/api/defect/createDefect",
+              '/api/defect/createDefect',
               {
                 title: this.createForm.title,
                 state: this.createForm.state,
@@ -359,41 +359,40 @@ export default {
                 endDate: this.createForm.endDate,
                 projectID: this.pID,
                 sprintID: this.createForm.sprintID,
-                userID:this.ruleForm.userID
+                userID: this.ruleForm.userID
               },
               {
-                emulateJSON: true,
+                emulateJSON: true
               }
             )
             .then((response) => {
-              if (response.data.message == "成功") {
-                this.show();
-                this.isCreate = false;
-                this.createForm = [];
+              if (response.data.message === '成功') {
+                this.show()
+                this.isCreate = false
+                this.createForm = []
               }
             })
             .catch(function (error) {
-              console.log(error);
-            });
+              console.log(error)
+            })
         } else {
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     },
-    taskListName(pri){
-      switch(pri){
-        case"最高":return "taskHighest";
-        case"较高":return "taskHigher";
-        case"一般":return "taskCommon";
-        case"较低":return "taskLower";
-        case"最低":return "taskLowest";
+    taskListName (pri) {
+      switch (pri) {
+        case '最高':return 'taskHighest'
+        case '较高':return 'taskHigher'
+        case '一般':return 'taskCommon'
+        case '较低':return 'taskLower'
+        case '最低':return 'taskLowest'
       }
     }
-  },
+  }
 }
 </script>
-
 
 <style>
 .defect_card {

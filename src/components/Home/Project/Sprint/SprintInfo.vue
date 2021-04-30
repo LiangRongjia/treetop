@@ -55,16 +55,16 @@ export default {
     }
   },
   watch: {
-    title(to, from){
+    title (to, from) {
       this.sprintInfo.title = to
     },
-    startDate(to, from){
+    startDate (to, from) {
       this.sprintInfo.startDate = to
     },
-    endDate(to, from){
+    endDate (to, from) {
       this.sprintInfo.endDate = to
     },
-    description(to, from){
+    description (to, from) {
       this.sprintInfo.description = to
     }
   },

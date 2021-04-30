@@ -8,7 +8,7 @@
       :visible.sync="isViewMeeting"
       :modal="false">
       <h1>Type</h1>
-      <el-input v-model="currentMeeting.type"placeholder="请输入内容"></el-input>
+      <el-input v-model="currentMeeting.type" placeholder="请输入内容"></el-input>
       <h1>Date</h1>
       <el-date-picker v-model="currentMeeting.date" type="date"/>
       <h1>Description</h1>
@@ -41,7 +41,7 @@
 <script>
 export default {
   name: 'Meetings',
-  props:[
+  props: [
     'data',
     'fields'
   ],

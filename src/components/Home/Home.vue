@@ -42,7 +42,7 @@ export default {
     display: flex;
     flex-direction: column;
     border-right: rgba(0,0,0,0.1) solid 1px;
-		overflow: auto;
+    overflow: auto;
   }
   .home__main{
     grid-column-start: 6;

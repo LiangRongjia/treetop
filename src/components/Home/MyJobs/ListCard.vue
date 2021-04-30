@@ -65,7 +65,7 @@ export default {
   flex-grow: 1;
 }
 .table{
-	max-height: 360px;
+  max-height: 360px;
   overflow: auto;
 }
 .table *{

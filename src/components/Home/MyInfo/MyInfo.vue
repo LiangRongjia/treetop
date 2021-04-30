@@ -50,7 +50,7 @@ export default {
         name: this._GLOBAL.userObj.name,
         avatar: this._GLOBAL.imgBaseUrl + this._GLOBAL.userObj.avatar
       },
-      newMyInfo:{
+      newMyInfo: {
         ID: this._GLOBAL.userObj.ID,
         name: this._GLOBAL.userObj.name,
         avatar: this._GLOBAL.imgBaseUrl + this._GLOBAL.userObj.avatar,

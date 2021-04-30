@@ -36,7 +36,6 @@
       </el-table>
     </el-card>
 
-
     <el-dialog class="form_card" title="Change Taskinfo"
       :visible.sync="isForm"
       :modal="false">
@@ -158,11 +157,11 @@
 import progresslist from './progresslist.vue'
 export default{
   name: 'ProjectProgress',
-    components: {
-    'progress-list': progresslist,
+  components: {
+    'progress-list': progresslist
   },
   props: ['projectID'],
-  data() {
+  data () {
     return {
       // pickerOptions: {
       //   disabledDate(time) {
@@ -176,123 +175,122 @@ export default{
       sprintList: [],
       taskList: [],
       ruleForm: {},
-      sprintList:{},
-      reqtList:[],
+      reqtList: [],
       createForm: {
-        userID:1,
-        title:"",
-        state:"未开始",
-        priority:"一般",
-        startDate:"2021-01-13",
-        endDate:"2021-01-14",
-        description:"",
-        projectID:1,
-        sprintID:1,
-        reqtID:6
+        userID: 1,
+        title: '',
+        state: '未开始',
+        priority: '一般',
+        startDate: '2021-01-13',
+        endDate: '2021-01-14',
+        description: '',
+        projectID: 1,
+        sprintID: 1,
+        reqtID: 6
       },
       rules: {
-        title: [{ required: true, message: "请输入需求标题", trigger: "blur" }],
+        title: [{ required: true, message: '请输入需求标题', trigger: 'blur' }],
         priority: [
-          { required: true, message: "请选择优先级", trigger: "change" },
+          { required: true, message: '请选择优先级', trigger: 'change' }
         ],
         endDate: [
           {
             required: true,
-            message: "请选择日期",
-            trigger: "change",
-          },
-        ],
+            message: '请选择日期',
+            trigger: 'change'
+          }
+        ]
       },
       createrules: {
-        title: [{ required: true, message: "请输入需求标题", trigger: "blur" }],
+        title: [{ required: true, message: '请输入需求标题', trigger: 'blur' }],
         priority: [
-          { required: true, message: "请选择优先级", trigger: "change" },
+          { required: true, message: '请选择优先级', trigger: 'change' }
         ],
         state: [
-          { required: true, message: "请选择任务状态", trigger: "change" },
+          { required: true, message: '请选择任务状态', trigger: 'change' }
         ],
         startDate: [
           {
             required: true,
-            message: "请选择开始日期",
-            trigger: "change",
-          },
+            message: '请选择开始日期',
+            trigger: 'change'
+          }
         ],
         endDate: [
           {
             required: true,
-            message: "请选择截止日期",
-            trigger: "change",
-          },
-        ],
+            message: '请选择截止日期',
+            trigger: 'change'
+          }
+        ]
       }
-    };
+    }
   },
-  watch:{
-    projectID(to, from){
+  watch: {
+    projectID (to, from) {
       this.pID = this._GLOBAL.ProjectList[to].ID
       this.show()
     }
   },
-  created() {
-    this.show();
-    this.getSprintList();
-    this.getreqtList();
+  created () {
+    this.show()
+    this.getSprintList()
+    this.getreqtList()
   },
   methods: {
-    create(){
-      this.tocreate=true;
+    create () {
+      this.tocreate = true
     },
-    change(row) {
-      this.isForm = true;
-      this.ruleForm=row;
+    change (row) {
+      this.isForm = true
+      this.ruleForm = row
     },
-    pri(pri){
-      switch(pri){
-        case "最高":return "danger";
-        case "较高":return "warning";
-        case "普通":return "success";
-        case "较低":return "primary";
-        case "最低":return "info";
+    pri (pri) {
+      switch (pri) {
+        case '最高':return 'danger'
+        case '较高':return 'warning'
+        case '普通':return 'success'
+        case '较低':return 'primary'
+        case '最低':return 'info'
       }
     },
-    show() {
+    show () {
       this.axios
-        .get("/api/task/getTaskListByPid?projectid="+this.pID, {
-          emulateJSON: true,
+        .get('/api/task/getTaskListByPid?projectid=' + this.pID, {
+          emulateJSON: true
         })
         .then((response) => {
-          if (response.data.message == "成功") {
-            this.taskList = response.data.data.task;
+          if (response.data.message === '成功') {
+            this.taskList = response.data.data.task
           }
         })
         .catch(function (error) {
-          console.log(error);
-        });
+          console.log(error)
+        })
     },
 
-    filterTag(value, row) {
-      return row.tag === value;
+    filterTag (value, row) {
+      return row.tag === value
     },
-    submitForm(formName) {
+    submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert("submit!");
-          console.log(this.ruleForm.reqtID);
-          //console.log(this.pID,this.userID,this.ruleForm.ID,this.ruleForm.title,this.ruleForm.state,this.ruleForm.priority,this.ruleForm.startDate,this.ruleForm.endDate,this.ruleForm.description);
-          this.updateTaskInfo(this.pID,this.userID,this.ruleForm.ID,this.ruleForm.title,this.ruleForm.state,this.ruleForm.priority,this.ruleForm.startDate,this.ruleForm.endDate,this.ruleForm.description,this.ruleForm.sprintID,this.ruleForm.reqtID);
+          alert('submit!')
+          console.log(this.ruleForm.reqtID)
+          // console.log(this.pID,this.userID,this.ruleForm.ID,this.ruleForm.title,this.ruleForm.state,this.ruleForm.priority,this.ruleForm.startDate,this.ruleForm.endDate,this.ruleForm.description);
+          this.updateTaskInfo(this.pID, this.userID, this.ruleForm.ID, this.ruleForm.title, this.ruleForm.state, this.ruleForm.priority, this.ruleForm.startDate, this.ruleForm.endDate, this.ruleForm.description, this.ruleForm.sprintID, this.ruleForm.reqtID)
         } else {
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
     },
-    updateTaskInfo(projectID,userid,taskid,tasktitle,state,taskpriority,starttime,endtime,describ,sprintid,reqtid){
+    updateTaskInfo (projectID, userid, taskid, tasktitle, state, taskpriority, starttime, endtime, describ, sprintid, reqtid) {
       this.axios
-        .post("/api/task/updateTaskByID",{
+        .post('/api/task/updateTaskByID', {
           projectID: projectID,
           userID: userid,
           ID: taskid,
@@ -303,67 +301,67 @@ export default{
           endDate: endtime,
           description: describ,
           sprintID: sprintid,
-          reqtID: reqtid,
+          reqtID: reqtid
         }, {
-          emulateJSON: true,
+          emulateJSON: true
         })
         .then((response) => {
-          console.log(response);
-          if (response.data.code == 20000) {
-            this.$alert("修改成功！");
-            this.isForm=false;
+          console.log(response)
+          if (response.data.code === 20000) {
+            this.$alert('修改成功！')
+            this.isForm = false
           }
         })
         .catch(function (error) {
-          console.log(error);
-        });
+          console.log(error)
+        })
     },
 
-    createtask(){
-      console.log(this.createForm);
+    createtask () {
+      console.log(this.createForm)
       this.axios
-        .post("/api/task/addtask",this.createForm, {
-          emulateJSON: true,
+        .post('/api/task/addtask', this.createForm, {
+          emulateJSON: true
         })
         .then((response) => {
-          if (response.data.code == 20000) {
-            this.$alert("创建成功！新建任务id为"+response.data.data.ID);
-            this.tocreate=false;
+          if (response.data.code === 20000) {
+            this.$alert('创建成功！新建任务id为' + response.data.data.ID)
+            this.tocreate = false
           }
         })
         .catch(function (error) {
-          console.log(error);
-        });
+          console.log(error)
+        })
     },
-    getSprintList(){
+    getSprintList () {
       this.axios
-        .post("/api/sprint/getSpListByPID?ID="+this.pID, {
-          emulateJSON: true,
+        .post('/api/sprint/getSpListByPID?ID=' + this.pID, {
+          emulateJSON: true
         })
         .then((response) => {
-          if (response.data.message == "成功") {
-            this.sprintList = response.data.data.spList;
+          if (response.data.message === '成功') {
+            this.sprintList = response.data.data.spList
           }
         })
         .catch(function (error) {
-          console.log(error);
-        });
+          console.log(error)
+        })
     },
-    getreqtList(){
+    getreqtList () {
       this.axios
-        .post("/api/requirement/getReqtListByPID?ID="+this.pID, {
-          emulateJSON: true,
+        .post('/api/requirement/getReqtListByPID?ID=' + this.pID, {
+          emulateJSON: true
         })
         .then((response) => {
-          if (response.data.message == "成功") {
-            this.reqtList = response.data.data.reqtList;
+          if (response.data.message === '成功') {
+            this.reqtList = response.data.data.reqtList
           }
         })
         .catch(function (error) {
-          console.log(error);
-        });
-    },
-  },
+          console.log(error)
+        })
+    }
+  }
 }
 </script>
 

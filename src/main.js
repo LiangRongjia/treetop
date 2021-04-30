@@ -29,7 +29,7 @@ Vue.prototype._GLOBAL = {
     name: '',
     avatar: ''
   },
-  ProjectList:[],
+  ProjectList: [],
   projectIndex: 0
 }
 

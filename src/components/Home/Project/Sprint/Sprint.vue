@@ -88,8 +88,8 @@ export default{
     return {
       isAddMeeting: false,
       isNewSprint: false,
-      newMeeting: { type: '', date: '', description: '', attachment: '', },
-      newSprint: { title:'', description: '', startDate: '', endDate:'' },
+      newMeeting: { type: '', date: '', description: '', attachment: '' },
+      newSprint: { title: '', description: '', startDate: '', endDate: '' },
       sprintsList: [{ ID: '', title: '', description: '', start: '', end: '' }],
       sprintIndex: 0,
       requiresFields: [ 'title', 'type', 'kind', 'priority', 'description', 'endDate', 'stitle' ],
@@ -100,8 +100,8 @@ export default{
       tasks: [{ title: '', state: '', username: '', startDate: '', endDate: '', priority: '', description: '' }],
       defects: [{ title: '', type: '', state: '', endDate: '', description: '' }],
       meetings: [
-        { ID: 1, type: "Require", description: 'Description of meetings 1', date: '2020-12-09', attachment: 'attachment' },
-        { ID: 2, type: "Require", description: 'Description of meetings 2', date: '2020-12-09', attachment: 'attachment' }
+        { ID: 1, type: 'Require', description: 'Description of meetings 1', date: '2020-12-09', attachment: 'attachment' },
+        { ID: 2, type: 'Require', description: 'Description of meetings 2', date: '2020-12-09', attachment: 'attachment' }
       ]
     }
   },
@@ -111,7 +111,7 @@ export default{
       this.sprintIndex = 0
       this.getSprints()
     },
-    sprintIndex (to, from){
+    sprintIndex (to, from) {
       this.getRequires()
       this.getTasks()
       this.getDefects()
@@ -142,64 +142,63 @@ export default{
     getSprints () {
       var projectID = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].ID
       this.axios
-      .post(this._GLOBAL.baseUrl + '/sprint/getSpListByPID?ID=' + projectID)
-      .then((response) => {
-        if(response.data.message == '成功'){
-          if(response.data.data.spList.length > 0){
-            this.sprintsList = response.data.data.spList
-            this.getRequires()
-            this.getTasks()
-            this.getDefects()
+        .post(this._GLOBAL.baseUrl + '/sprint/getSpListByPID?ID=' + projectID)
+        .then((response) => {
+          if (response.data.message === '成功') {
+            if (response.data.data.spList.length > 0) {
+              this.sprintsList = response.data.data.spList
+              this.getRequires()
+              this.getTasks()
+              this.getDefects()
             // this.getMeetings()
+            } else {
+              this.sprintsList = [{ ID: '', title: '', description: '', start: '', end: '' }]
+              this.requires = [{ title: '', type: '', kind: '', priority: '', description: '', endDate: '', stitle: '', state: '' }]
+              this.tasks = [{ title: '', state: '', username: '', startDate: '', endDate: '', priority: '', description: '' }]
+              this.defects = [{ title: '', type: '', state: '', endDate: '', description: '' }]
+            }
           }
-          else {
-            this.sprintsList = [{ ID: '', title: '', description: '', start: '', end: '' }]
-            this.requires = [{ title: '', type: '', kind: '', priority: '', description: '', endDate: '', stitle: '', state: '' }]
-            this.tasks = [{ title: '', state: '', username: '', startDate: '', endDate: '', priority: '', description: '' }]
-            this.defects = [{ title: '', type: '', state: '', endDate: '', description: '' }]
-          }
-        }
-      })
+        })
     },
     getRequires () {
       var sprintID = this.sprintsList[this.sprintIndex].ID
       this.axios
-      .post(this._GLOBAL.baseUrl + '/requirement/getReqtListByPID?ID=' + sprintID)
-      .then((response) => {
-        if(response.data.message == '成功'){
-          this.requires = response.data.data.reqtList
-        }
-      })
+        .post(this._GLOBAL.baseUrl + '/requirement/getReqtListByPID?ID=' + sprintID)
+        .then((response) => {
+          if (response.data.message === '成功') {
+            this.requires = response.data.data.reqtList
+          }
+        })
     },
     getDefects () {
       var sprintID = this.sprintsList[this.sprintIndex].ID
       this.axios
-      .post(this._GLOBAL.baseUrl + '/defect/getDefListBySID?ID=' + sprintID)
-      .then((response) => {
-        if(response.data.message == '成功'){
-          this.defects = response.data.data.defectList
-        }
-      })
+        .post(this._GLOBAL.baseUrl + '/defect/getDefListBySID?ID=' + sprintID)
+        .then((response) => {
+          if (response.data.message === '成功') {
+            this.defects = response.data.data.defectList
+          }
+        })
     },
     getTasks () {
       var sprintID = this.sprintsList[this.sprintIndex].ID
       this.axios
-      .get(this._GLOBAL.baseUrl + '/task/getTaskListBySid?sprintid=' + sprintID)
-      .then((response) => {
-        if(response.data.message == '成功'){
-          this.tasks = response.data.data.task
-        }
-      })
+        .get(this._GLOBAL.baseUrl + '/task/getTaskListBySid?sprintid=' + sprintID)
+        .then((response) => {
+          if (response.data.message === '成功') {
+            this.tasks = response.data.data.task
+          }
+        })
     },
     getMeetings () {
-      var sprintID = this.sprintsList[this.sprintIndex].ID
+      // var sprintID = this.sprintsList[this.sprintIndex].ID
       this.axios
-      .post(this._GLOBAL.baseUrl + '/')
-      .then((response) => {
-        if(response.data.message == '成功'){
-          this.defects = response.data.data.reqtList
-        }
-      })
+        .post(this._GLOBAL.baseUrl + '/')
+        .then((response) => {
+          if (response.data.message === '成功') {
+            this.defects = response.data.data.reqtList
+          }
+        })
     },
     editSprintInfo (data) {
       var url = this._GLOBAL.baseUrl + '/sprint/updateSpDesByID'
@@ -210,25 +209,25 @@ export default{
       newSprintInfo.endDate = data.endDate
       newSprintInfo.description = data.description
       this.axios.post(url, newSprintInfo, config).then((response) => {
-        if(response.data.message == '成功'){
+        if (response.data.message === '成功') {
           this.getSprints()
         }
       })
       url = this._GLOBAL.baseUrl + '/sprint/updateSpEdByID'
       this.axios.post(url, newSprintInfo, config).then((response) => {
-        if(response.data.message == '成功'){
+        if (response.data.message === '成功') {
           this.getSprints()
         }
       })
       url = this._GLOBAL.baseUrl + '/sprint/updateSpSdByID'
       this.axios.post(url, newSprintInfo, config).then((response) => {
-        if(response.data.message == '成功'){
+        if (response.data.message === '成功') {
           this.getSprints()
         }
       })
       url = this._GLOBAL.baseUrl + '/sprint/updateSpTitleByID'
       this.axios.post(url, newSprintInfo, config).then((response) => {
-        if(response.data.message == '成功'){
+        if (response.data.message === '成功') {
           this.getSprints()
         }
       })
@@ -239,7 +238,7 @@ export default{
       var postData = this.newSprint
       postData.projectID = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].ID
       this.axios.post(url, postData, config).then((response) => {
-        if(response.data.message == '成功'){
+        if (response.data.message === '成功') {
           this.isNewSprint = false
           this.getSprints()
         }
@@ -249,9 +248,9 @@ export default{
       var params = 'ID=' + this.sprintsList[this.sprintIndex].ID
       var url = this._GLOBAL.baseUrl + '/sprint/delSpByID?' + params
       var config = { emulateJSON: true }
-      var postData = new Object()
+      var postData = {}
       this.axios.post(url, postData, config).then((response) => {
-        if(response.data.message == '成功'){
+        if (response.data.message === '成功') {
           this.sprintIndex = 0
           this.getSprints()
         }
