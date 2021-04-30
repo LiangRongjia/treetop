@@ -54,12 +54,7 @@ export default {
     },
     invite () {
       this.isInviting = false
-      this.axios.get('http://39.97.175.119:8801/project/addMember', {
-        params: {
-          PID: this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].ID,
-          UID: this.userid
-        }
-      })
+      this.APIs.addMember(this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].ID, this.userid)
         .then((response) => {
           if (response.data.message === '成功') {
             this.$alert('Invite successfully')
@@ -67,11 +62,7 @@ export default {
         })
     },
     show () {
-      this.axios.get('http://39.97.175.119:8801/project/getMemberListByPID', {
-        params: {
-          ID: this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].ID
-        }
-      })
+      this.APIs.getMemberListByPID(this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].ID)
         .then((response) => {
           if (response.data.message === '成功') {
             this.data = response.data.data.memberList

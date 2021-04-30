@@ -1,29 +1,30 @@
 <template>
   <div>
     <el-tabs v-model="tab" type="card">
-      <el-tab-pane label="Basic" name="basic">
-        <project-basic :projectID="projectID"/>
+      <el-tab-pane label="基本" name="basic">
+        <project-basic :project="project"/>
       </el-tab-pane>
-      <el-tab-pane label="Sprint" name="sprint">
-        <project-sprint :projectIndex="projectID"/>
+      <el-tab-pane label="迭代" name="sprint">
+        <project-sprint :project="project"/>
       </el-tab-pane>
-      <el-tab-pane label="Require" name="require">
-        <project-require :projectID="projectID"/>
+      <el-tab-pane label="需求" name="require">
+        <project-require :project="project"/>
       </el-tab-pane>
-      <el-tab-pane label="Progress" name="progress">
-        <project-progress :projectID="projectID"/>
+      <el-tab-pane label="进度" name="progress">
+        <project-progress :project="project"/>
       </el-tab-pane>
-      <el-tab-pane label="Defect" name="defect">
-        <project-defect :projectID="projectID"/>
+      <el-tab-pane label="缺陷" name="defect">
+        <project-defect :project="project"/>
       </el-tab-pane>
-      <el-tab-pane label="Team" name="team">
-        <project-team :projectID="projectID" :list="list"/>
+      <el-tab-pane label="团队" name="team">
+        <project-team :project="project" :list="list"/>
       </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
+
 import ProjectRequire from './Require/Require.vue'
 import ProjectSprint from './Sprint/Sprint.vue'
 import ProjectProgress from './Progress/Progress.vue'
@@ -36,8 +37,7 @@ import ProjectTeam from './Team.vue'
  * 故使用全局变量传参
  * 下属组件不用路由，没有 route-view 情形，故不要使用全局变量，请使用 props 传参
  */
-export default{
-  name: 'Project',
+export default {
   components: {
     'project-sprint': ProjectSprint,
     'project-require': ProjectRequire,
@@ -46,22 +46,16 @@ export default{
     'project-progress': ProjectProgress,
     'project-team': ProjectTeam
   },
-  data () {
+  props: [
+    'project'
+  ],
+  data: function () {
     return {
-      tab: 'basic',
-      projectID: this._GLOBAL.projectIndex,
       list: []
     }
   },
-  watch: {
-    // 若路由路径变化，从全局变量刷新 projectID
-    $route () {
-      this.projectID = this._GLOBAL.projectIndex
-    }
-
-  },
   methods: {
-    show () {
+    show: function () {
       this.axios.get('http://39.97.175.119:8801/project/getMemberListByPID', {
         params: {
           ID: this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].ID

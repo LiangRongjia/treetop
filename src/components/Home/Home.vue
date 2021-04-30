@@ -1,22 +1,68 @@
 <template>
   <div class="app__home">
-    <home-menu class="home__menu customScrollBar" :userID="userID" :userName="userName"/>
-    <router-view class="home__main customScrollBar"></router-view>
+    <home-menu
+      class="home__menu customScrollBar"
+      :userID="userID"
+      :userName="userName"
+      :toPage="toPage"
+      :toProject="toProject"
+      :projects="projects"
+    />
+    <my-info v-if="activePage==='my-info'"></my-info>
+    <my-jobs v-if="activePage==='my-jobs'"></my-jobs>
+    <new-project v-if="activePage==='new-project'"></new-project>
+    <project-page
+      v-if="activePage==='project-page'"
+      :project="projects.filter(item=>item.ID===activeProjectID)[0]"
+    >
+    </project-page>
   </div>
 </template>
 
 <script>
+
 import HomeMenu from './HomeMenu.vue'
+import MyInfoPage from './MyInfo/MyInfo.vue'
+import MyJobsPage from './MyJobs/MyJobs.vue'
+import NewProjectPage from './NewProject/NewProject.vue'
+import ProjectPage from './Project/Project.vue'
+
 export default {
-  name: 'Home',
   components: {
-    'home-menu': HomeMenu
+    'home-menu': HomeMenu,
+    'my-info': MyInfoPage,
+    'my-jobs': MyJobsPage,
+    'new-project': NewProjectPage,
+    'project-page': ProjectPage
   },
-  data () {
+  data: function () {
     return {
-      // userID 依赖于全局变量
       userID: this._GLOBAL.userObj.ID,
-      userName: this._GLOBAL.userObj.name
+      userName: this._GLOBAL.userObj.name,
+      pages: [
+        'my-info',
+        'my-jobs',
+        'new-project',
+        'project-page'
+      ],
+      activePage: 'my-jobs',
+      activeProjectID: -1,
+      projects: []
+    }
+  },
+  mounted: function () {
+    this.APIs.getProjectsByUserID().then((response) => {
+      this.projects = response.data.data.prjList
+      console.log(this.projects)
+    })
+  },
+  methods: {
+    toPage: function (pageName) {
+      this.activePage = pageName
+    },
+    toProject: function (projectID) {
+      this.activePage = 'project-page'
+      this.activeProjectID = projectID
     }
   }
 }

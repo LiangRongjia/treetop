@@ -7,22 +7,26 @@
       </div>
     </div>
     <el-menu ref="home-menu" class="menu" default-active="my-jobs" :default-openeds="['myJob', 'myProjects']">
-      <el-menu-item index="my-info" @click="toMyInfo('my-info')">
-        <span>MY INFO</span>
+      <el-menu-item index="my-info" @click="toPage('my-info')">
+        <span>我的资料</span>
       </el-menu-item>
-      <el-menu-item index="my-jobs" @click="toMyJobs('my-jobs')">
-        <span>MY JOBS</span>
+      <el-menu-item index="my-jobs" @click="toPage('my-jobs')">
+        <span>我的工作</span>
       </el-menu-item>
       <el-submenu ref="project-menu" index="myProjects">
         <template slot="title">
-          <span>MY PROJECTS</span>
+          <span>我的项目</span>
         </template>
-        <el-menu-item v-for="(item, index) in projectsList" :index="index + ''" @click="toProject(item)" :key="item.ID">
+        <el-menu-item v-for="(item, index) in projects"
+          :index="index"
+          @click="toProject(item)"
+          :key="item.ID"
+        >
           {{item.name}}
         </el-menu-item>
       </el-submenu>
-      <el-menu-item :index="'newProject'" @click="toNewProject('newProject')" :key="'newProject'">
-        + CREATE PROJECT
+      <el-menu-item :index="'newProject'" @click="toPage('new-project')" :key="'new-project'">
+        + 创建项目
       </el-menu-item>
     </el-menu>
   </aside>
@@ -44,52 +48,23 @@ export default {
   name: 'HomeMenu',
   props: [
     'userID',
-    'userName'
+    'userName',
+    'toPage',
+    'projects',
+    'toProject'
   ],
-  data () {
+  data: function () {
     return {
-      avatarURL: this._GLOBAL.imgBaseUrl + this._GLOBAL.userObj.avatar,
-      myJobs: [{
-        text: 'My Task',
-        path: 'my-task'
-      },
-      {
-        text: 'My Message',
-        path: 'my-message'
-      }
-      ],
-      //       projectsList: [
-      //         { ID: 1, name: 'project-1' },
-      //         { ID: 2, name: 'project-2' },
-      //         { ID: 3, name: 'project-3' }
-      //       ]
-      projectsList: this._GLOBAL.ProjectList
+      avatarURL: this._GLOBAL.imgBaseUrl + this._GLOBAL.userObj.avatar
     }
-  },
-  mounted () {
-    this.$router.replace('/' + this.userName + '/my-jobs')
   },
   created: function () {
     this.acceptList()
   },
+  mounted: function () {
+    console.log(this.projects)
+  },
   methods: {
-    // 维护路径 this.$route.params.projectName
-    // 进入某项目页面
-    toProject (project) {
-      this._GLOBAL.projectIndex = this.$refs['home-menu']['activeIndex']
-      this.$router.push('/' + this.userName + '/' + project.name)
-    },
-    // 进入某工作页面
-    toMyJobs (path) {
-      this.$router.push('/' + this.userName + '/' + path)
-    },
-    // 进入我的信息页面
-    toMyInfo (path) {
-      this.$router.push('/' + this.userName + '/' + path)
-    },
-    toNewProject (path) {
-      this.$router.push('/' + this.userName + '/' + path)
-    },
     acceptList: function () {
       this.$eventBus.$on('add', (message) => {
         this.projectsList = this._GLOBAL.ProjectList

@@ -1,17 +1,35 @@
 <template>
   <div id="app">
-    <router-view/>
+    <login-page v-if="!loggedIn" :login="login"/>
+    <home-page v-if="loggedIn" />
+    <!-- <router-view/> -->
+
   </div>
 </template>
 
 <script>
+
+import LoginPage from './components/Login.vue'
+import HomePage from './components/Home/Home.vue'
+
 export default {
   name: 'App',
-  data () {
+  components: {
+    'login-page': LoginPage,
+    'home-page': HomePage
+  },
+  data: function () {
     return {
+      loggedIn: false
+    }
+  },
+  methods: {
+    login: function () {
+      this.loggedIn = true
     }
   }
 }
+
 </script>
 
 <style>

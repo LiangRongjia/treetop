@@ -11,7 +11,7 @@
     <el-button type="text" class="register" @click="registerVisible = true">注册</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" v-on:click="login">Login</el-button>
+          <el-button type="primary" v-on:click="loginHandle">Login</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -35,9 +35,10 @@
 </template>
 
 <script>
-export default{
+export default {
   name: 'Login',
-  data () {
+  props: ['login'],
+  data: function () {
     var validatePass = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请输入密码'))
@@ -77,7 +78,7 @@ export default{
     }
   },
   methods: {
-    submitForm (formName) {
+    submitForm: function (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.register()
@@ -88,46 +89,22 @@ export default{
         }
       })
     },
-    login () {
+    loginHandle: function () {
       // 登录，获取用户信息，后获取所有项目
-      this.axios.get('http://39.97.175.119:8801/user/login', {
-        params: {
-          name: this.userName,
-          password: this.password
+      this.APIs.login(this.userName, this.password).then(response => {
+        if (response.data.message === '成功') {
+          this._GLOBAL.userID = response.data.data.user.ID
+          this._GLOBAL.userObj = response.data.data.user
+          this.login()
+        } else {
+          this.$alert('The login failed, please re-enter your username and password', 'Login Failed', { confirmButtonText: 'OK' })
         }
+      }).catch(function (error) {
+        console.log(error)
       })
-        .then((response) => {
-          if (response.data.message === '成功') {
-            this._GLOBAL.userID = response.data.data.user.ID
-            this._GLOBAL.userObj = response.data.data.user
-            // 获取所有项目
-            this.axios.get('http://39.97.175.119:8801/project/getPrjListByUID', {
-              params: {
-                UID: this._GLOBAL.userObj.ID
-              }
-            })
-              .then((response) => {
-                if (response.data.message === '成功') {
-                  this._GLOBAL.ProjectList = response.data.data.prjList
-                  this._GLOBAL.projectIndex = 0
-                  this.$router.push('/' + this._GLOBAL.userObj.name)
-                }
-              })
-          } else {
-            this.$alert('The login failed, please re-enter your username and password', 'Login Failed', { confirmButtonText: 'OK' })
-          }
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
     },
-    register () {
-    // 'headers': {'Access-Control-Allow-Origin': '*','access-control-allow-credentials': 'true'}
-    // this.axios.setRequestHeader()
-      this.axios.post('/api/user/register', {
-        name: this.registerUserName,
-        password: this.ruleForm.pass
-      }, { emulateJSON: true })
+    register: function () {
+      this.APIs.register(this.registerUserName, this.ruleForm.pass)
         .then((response) => {
           if (response.data.message === '成功') {
             this.registerVisible = false

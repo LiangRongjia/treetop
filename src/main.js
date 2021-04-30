@@ -2,7 +2,6 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-import router from './router'
 
 // 引入 ElementUI
 import ElementUI from 'element-ui'
@@ -11,14 +10,17 @@ import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 
+import * as APIs from './APIs'
+
 import echarts from 'echarts'
-Vue.prototype.$echarts = echarts
-Vue.use(VueAxios, axios)
 
 Vue.config.productionTip = false
 
+Vue.use(VueAxios, axios)
 Vue.use(ElementUI)
 
+Vue.prototype.$echarts = echarts
+Vue.prototype.APIs = APIs
 Vue.prototype._GLOBAL = {
   userID: 1,
   projectID: 1,
@@ -32,10 +34,8 @@ Vue.prototype._GLOBAL = {
   ProjectList: [],
   projectIndex: 0
 }
-
 Vue.prototype.$eventBus = new Vue({
   el: '#app',
-  router,
   components: { App },
   template: '<App/>'
 })
