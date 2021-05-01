@@ -232,9 +232,10 @@ export default {
     }
   },
   created () {
-    this.show()
-    this.getSprintList()
-    this.getUserList()
+    // 问题：每一次切换到project都会发请求
+    // this.show()
+    // this.getSprintList()
+    // this.getUserList()
   },
   watch: {
     projectID (to, from) {

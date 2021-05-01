@@ -2,7 +2,7 @@
   <div>
     <el-tabs value="sprint" type="card">
       <el-tab-pane label="基本" name="basic">
-        <project-basic :project="project"/>
+        <basic-page :project="project"></basic-page>
       </el-tab-pane>
       <el-tab-pane label="迭代" name="sprint">
         <project-sprint
@@ -37,7 +37,7 @@ import ProjectRequire from './Require/Require.vue'
 import ProjectSprint from './SprintPage/SprintPage.vue'
 import ProjectProgress from './Progress/Progress.vue'
 import ProjectDefect from './Defect/Defect.vue'
-import ProjectBasic from './Basic/Basic.vue'
+import BasicPage from './BasicPage/BasicPage.vue'
 import ProjectTeam from './Team.vue'
 import MeetingsPage from './Meetings/Meetings.vue'
 
@@ -45,7 +45,7 @@ export default {
   components: {
     'project-sprint': ProjectSprint,
     'project-require': ProjectRequire,
-    'project-basic': ProjectBasic,
+    'basic-page': BasicPage,
     'project-defect': ProjectDefect,
     'project-progress': ProjectProgress,
     'project-team': ProjectTeam,

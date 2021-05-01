@@ -79,8 +79,7 @@ export default {
     this.myEcharts()
   },
   created: function () {
-    // this.calculate();
-    this.myEcharts()
+    // this.myEcharts()
   },
   watch: {
     // 若 projectID 变更，更新页面

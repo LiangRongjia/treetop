@@ -1,28 +1,28 @@
 <template>
   <el-card class="my-info__card">
     <div slot="header">
-      <span>My Information</span>
-      <el-button class="header-button" type="text" @click="editMyInfo">Edit</el-button>
+      <span>我的资料</span>
+      <el-button class="header-button" type="text" @click="editMyInfo">编辑</el-button>
     </div>
     <div class="card-content">
       <el-card shadow="never">
-        <div slot="header">Avatar</div>
+        <div slot="header">头像</div>
         <img :src="MyInfo.avatar">
       </el-card>
       <el-card shadow="never" class="myInfo__card">
-        <div slot="header">Information</div>
+        <div slot="header">资料</div>
         <h1>ID</h1>
         <p>{{MyInfo.ID}}</p>
-        <h1>Name</h1>
+        <h1>姓名</h1>
         <p>{{MyInfo.name}}</p>
       </el-card>
     </div>
     <el-dialog class="my-info__edit-dialog" title="Editting My Information " :visible.sync="isMyInfoEditting" :modal="false">
-      <h1>Name</h1>
+      <h1>姓名</h1>
       <el-input v-model="newMyInfo.name"></el-input>
-      <h1>Password</h1>
+      <h1>密码</h1>
       <el-input v-model="newMyInfo.password" type="password"></el-input>
-      <h1>Avatar</h1>
+      <h1>头像</h1>
       <el-upload
         class="avatar-uploader"
         action="https://jsonplaceholder.typicode.com/posts/"
@@ -40,8 +40,7 @@
 
 <script>
 export default {
-  title: 'MyInfo',
-  data () {
+  data: function () {
     return {
       isMyInfoEditting: false,
       imageUrl: '',
@@ -59,10 +58,10 @@ export default {
     }
   },
   methods: {
-    editMyInfo () {
+    editMyInfo: function () {
       this.isMyInfoEditting = true
     },
-    confirmEdit () {
+    confirmEdit: function () {
       this.isMyInfoEditting = false
     }
   }

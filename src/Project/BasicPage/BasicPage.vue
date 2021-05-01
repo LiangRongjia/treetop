@@ -1,19 +1,41 @@
 <template>
   <div>
-    <basic-info class="basic__card" :name="basic.name" :hostname="basic.hostname" :start="basic.start" :end="basic.end"
-     :description="basic.description" :state="basic.state" />
-    <basic-sprint class="basic__card" :name="sprint.name" :state="sprint.state" :time="sprint.time" />
-    <basic-rtd class="basic__card" :count="rtd.count" :already="rtd.already" :processing="rtd.processing" :nostarting="rtd.nostarting"
-     :percentage="rtd.percentage" :dCnt="rtd.dCnt" :rCnt="rtd.rCnt"/>
+    <basic-info
+      class="basic__card"
+      :name="basic.name"
+      :hostname="basic.hostname"
+      :start="basic.start"
+      :end="basic.end"
+      :description="basic.description"
+      :state="basic.state">
+    </basic-info>
+    <basic-sprint
+      class="basic__card"
+      :name="sprint.name"
+      :state="sprint.state"
+      :time="sprint.time">
+    </basic-sprint>
+    <basic-rtd
+      class="basic__card"
+      :count="rtd.count" :already="rtd.already"
+      :processing="rtd.processing"
+      :nostarting="rtd.nostarting"
+      :percentage="rtd.percentage"
+      :dCnt="rtd.dCnt"
+      :rCnt="rtd.rCnt">
+    </basic-rtd>
   </div>
 </template>
 <script>
+
 import BasicInfo from './BasicInfo.vue'
 import BasicSprint from './BasicSprint.vue'
 import BasicRTD from './BasicRTD.vue'
+
 /* 该组件依据当前项目名，获取所有迭代信息
-   * 当前项目名从路径(或全局变量？])获取
-   */
+ * 当前项目名从路径(或全局变量？])获取
+ */
+
 export default {
   name: 'Project',
   components: {
@@ -25,7 +47,7 @@ export default {
     // projectID 依赖于组件参数 props
     'projectID'
   ],
-  data () {
+  data: function () {
     return {
       basic: {
         name: this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].name,
@@ -53,7 +75,7 @@ export default {
   },
   watch: {
     // 若 projectID 变更，更新页面
-    projectID (to, from) {
+    projectID: function (to, from) {
       this.basic.name = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].name
       this.basic.hostname = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].hostName
       this.basic.description = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].description
@@ -70,11 +92,11 @@ export default {
       this.func()
     })
   },
-  mounted () {
+  mounted: function () {
     this.func()
   },
   methods: {
-    func () {
+    func: function () {
       this.basic.name = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].name
       this.basic.hostname = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].hostName
       this.basic.description = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].description
@@ -82,7 +104,7 @@ export default {
       this.basic.end = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].endDate
       this.basic.state = this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].state
     },
-    getSprintName () {
+    getSprintName: function () {
       this.axios.post('http://39.97.175.119:8801/sprint/getSpListByPID?ID=' + this._GLOBAL.ProjectList[this._GLOBAL.projectIndex]
         .ID)
         .then((response) => {
@@ -101,7 +123,7 @@ export default {
           }
         })
     },
-    calculate () {
+    calculate: function () {
       this.axios.get('http://39.97.175.119:8801/task/getTaskListByPid?projectid=' + this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].ID)
         .then((response) => {
           if (response.data.message === '成功') {
@@ -141,22 +163,6 @@ export default {
           console.log(error)
         })
     }
-
-    // addRequires () {
-    //   this.$alert('Add a require', 'dialog', {
-    //     confirmButtonText: 'OK'
-    //   })
-    // },
-    // addTasks () {
-    //   this.$alert('Add a task', 'dialog', {
-    //     confirmButtonText: 'OK'
-    //   })
-    // },
-    // addDefects () {
-    //   this.$alert('Add a defect', 'dialog', {
-    //     confirmButtonText: 'OK'
-    //   })
-    // }
   }
 }
 </script>
