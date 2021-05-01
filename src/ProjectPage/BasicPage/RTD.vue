@@ -3,30 +3,35 @@
     <el-row :gutter="20">
       <el-col :span="12">
         <el-card>
-          <div slot="header">Progress</div>
+          <div slot="header">任务进度</div>
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-progress type="dashboard" :percentage="percentage" :color="colors" style="position: relative; left: 25%;"></el-progress>
+              <el-progress
+                type="dashboard"
+                :percentage="percentage"
+                :color="colors"
+                style="position: relative; left: 25%;">
+              </el-progress>
             </el-col>
             <el-col :span="10" :offset="1">
-              <p>All: {{count}}</p><br />
-              <p>Pending: {{nostarting}}</p><br />
-              <p>In progress: {{processing}}</p><br />
-              <p>Completed: {{already}}</p><br />
+              <p>全部: {{count}}</p><br />
+              <p>等待: {{nostarting}}</p><br />
+              <p>进行中: {{processing}}</p><br />
+              <p>已完成: {{already}}</p><br />
             </el-col>
           </el-row>
         </el-card>
       </el-col>
       <el-col :span="12">
         <el-card>
-          <div slot="header">Project distribution</div>
+          <div slot="header">项目概况</div>
           <el-col :span="12" :offset="2">
           <div id="main" style="width: 200px; height:168px; align-content: center;"></div>
           </el-col>
           <el-col :span="8" :offset="1">
-            <p>Require: {{rCnt}}</p><br />
-            <p>Task: {{count}}</p><br />
-            <p>Defect: {{dCnt}}</p><br />
+            <p>需求: {{rCnt}}</p><br />
+            <p>任务: {{count}}</p><br />
+            <p>缺陷: {{dCnt}}</p><br />
           </el-col>
         </el-card>
       </el-col>
@@ -35,6 +40,15 @@
 </template>
 
 <script>
+
+const colors = [
+  { color: '#f56c6c', percentage: 20 },
+  { color: '#e6a23c', percentage: 40 },
+  { color: '#5cb87a', percentage: 60 },
+  { color: '#1989fa', percentage: 80 },
+  { color: '#6f7ad3', percentage: 100 }
+]
+
 export default {
   props: [
     'count',
@@ -45,37 +59,12 @@ export default {
     'rCnt',
     'dCnt'
   ],
-  data () {
+  data: function () {
     return {
-      // count: 0,
-      // already: 0,
-      // processing: 0,
-      // nostarting: 0,
-      // percentage: 0,
-      colors: [{
-        color: '#f56c6c',
-        percentage: 20
-      },
-      {
-        color: '#e6a23c',
-        percentage: 40
-      },
-      {
-        color: '#5cb87a',
-        percentage: 60
-      },
-      {
-        color: '#1989fa',
-        percentage: 80
-      },
-      {
-        color: '#6f7ad3',
-        percentage: 100
-      }
-      ]
+      colors
     }
   },
-  mounted () {
+  mounted: function () {
     this.myEcharts()
   },
   created: function () {
@@ -83,18 +72,18 @@ export default {
   },
   watch: {
     // 若 projectID 变更，更新页面
-    rCnt (to, from) {
+    rCnt: function (to, from) {
       this.myEcharts()
     },
-    dCnt (to, from) {
+    dCnt: function (to, from) {
       this.myEcharts()
     },
-    count (to, from) {
+    count: function (to, from) {
       this.myEcharts()
     }
   },
   methods: {
-    calculate () {
+    calculate: function () {
       this.axios.get('http://39.97.175.119:8801/task/getTaskListByPid?projectid=' + this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].ID)
         .then((response) => {
           if (response.data.message === '成功') {
@@ -117,53 +106,37 @@ export default {
           console.log(error)
         })
     },
-    increase () {
+    increase: function () {
       this.percentage += 10
       if (this.percentage > 100) {
         this.percentage = 100
       }
     },
-    decrease () {
+    decrease: function () {
       this.percentage -= 10
       if (this.percentage < 0) {
         this.percentage = 0
       }
     },
-    myEcharts () {
+    myEcharts: function () {
       // 基于准备好的dom，初始化echarts实例
       //  var myChart = this.$echarts.init(document.getElementById('main'));
       var myChart = require('echarts').init(document.getElementById('main'))
       // 指定图表的配置项和数据
       var option = {
-        // title: {
-        //   text: ''
-        // },
-        tooltip: {},
-        // legend: {
-        //   data: ['销量']
-        // },
-        // xAxis: {
-        //   data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
-        // },
-        // yAxis: {},
         series: [{
-          // name: '访问来源',
           type: 'pie', // 设置图表类型为饼图
           radius: '80%', // 饼图的半径，外半径为可视区尺寸（容器高宽中较小一项）的 55% 长度。
-          data: [ // 数据数组，name 为数据项名称，value 为数据项值
-            {
-              value: this.rCnt,
-              name: 'Require'
-            },
-            {
-              value: this.count,
-              name: 'Task'
-            },
-            {
-              value: this.dCnt,
-              name: 'Defect'
-            }
-          ]
+          data: [{
+            value: this.rCnt,
+            name: 'Require'
+          }, {
+            value: this.count,
+            name: 'Task'
+          }, {
+            value: this.dCnt,
+            name: 'Defect'
+          }]
         }]
       }
 

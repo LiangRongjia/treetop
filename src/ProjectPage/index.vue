@@ -5,27 +5,28 @@
         <basic-page :project="project"></basic-page>
       </el-tab-pane>
       <el-tab-pane label="迭代" name="sprint">
-        <project-sprint
+        <sprint-page
           :sprints="sprints"
           :requires="requires"
           :tasks="tasks"
           :defects="defects"
-          :meetings="meetings"/>
+          :meetings="meetings">
+        </sprint-page>
       </el-tab-pane>
       <el-tab-pane label="需求" name="require">
-        <project-require :project="project"/>
+        <require-page :project="project"></require-page>
       </el-tab-pane>
       <el-tab-pane label="进度" name="progress">
-        <project-progress :project="project"/>
+        <progress-page :project="project"></progress-page>
       </el-tab-pane>
       <el-tab-pane label="缺陷" name="defect">
-        <project-defect :project="project"/>
+        <defect-page :project="project"></defect-page>
       </el-tab-pane>
       <el-tab-pane label="团队" name="team">
-        <project-team :project="project" :list="list"/>
+        <team-page :project="project" :list="list"></team-page>
       </el-tab-pane>
       <el-tab-pane label="会议" name="meetings">
-        <meetings-page :meetings="meetings"/>
+        <meetings-page :meetings="meetings"></meetings-page>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -33,22 +34,22 @@
 
 <script>
 
-import ProjectRequire from './Require/Require.vue'
-import ProjectSprint from './SprintPage/SprintPage.vue'
-import ProjectProgress from './Progress/Progress.vue'
-import ProjectDefect from './Defect/Defect.vue'
-import BasicPage from './BasicPage/BasicPage.vue'
-import ProjectTeam from './Team.vue'
-import MeetingsPage from './Meetings/Meetings.vue'
+import RequirePage from './RequirePage'
+import SprintPage from './SprintPage'
+import ProgressPage from './ProgressPage'
+import DefectPage from './DefectPage'
+import BasicPage from './BasicPage'
+import TeamPage from './TeamPage'
+import MeetingsPage from './MeetingsPage'
 
 export default {
   components: {
-    'project-sprint': ProjectSprint,
-    'project-require': ProjectRequire,
     'basic-page': BasicPage,
-    'project-defect': ProjectDefect,
-    'project-progress': ProjectProgress,
-    'project-team': ProjectTeam,
+    'sprint-page': SprintPage,
+    'require-page': RequirePage,
+    'progress-page': ProgressPage,
+    'defect-page': DefectPage,
+    'team-page': TeamPage,
     'meetings-page': MeetingsPage
   },
   props: {

@@ -59,10 +59,17 @@ export const getProjectsByUserID = (userID) => {
           }, {
             name: '项目2',
             ID: 2,
+            startDate: '4325436',
+            endDate: '34254',
+            description: '543gthyej36',
+            status: 'frgwhry',
+            hostName: 'liangrongjia',
+            hostID: 2,
             sprints: [{
               ID: 2,
               projectID: 2,
               index: 0, // 项目内的次序
+              status: '已完成',
               title: 'sprint1',
               description: 'greht',
               startDate: 'fff',
@@ -71,6 +78,7 @@ export const getProjectsByUserID = (userID) => {
               ID: 3,
               projectID: 2,
               index: 1, // 项目内的次序
+              status: '进行中',
               title: 'sprint2',
               description: 'gahsr',
               startDate: 'f',

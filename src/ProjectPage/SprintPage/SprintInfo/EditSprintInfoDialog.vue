@@ -1,5 +1,10 @@
 <template>
-  <el-dialog class="sprint__edit-sprint-dialog" title="Editting Sprint Info" :visible.sync="visable" :modal="false">
+  <el-dialog
+    class="sprint__edit-sprint-dialog"
+    title="Editting Sprint Info"
+    :visible.sync="visable"
+    :modal-append-to-body="false"
+    :show-close="false">
     <h1>标题</h1>
     <el-input v-model="newTitle"></el-input>
     <h1>开始时间</h1>
@@ -9,8 +14,8 @@
     <h1>详细描述</h1>
     <el-input v-model="newDescription" type="textarea"></el-input>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="$emit('deleteSprint', ID)">删除迭代</el-button>
-      <el-button @click="$emit('cancelEdit')">取消</el-button>
+      <el-button @click="deleteSprint">删除迭代</el-button>
+      <el-button @click="closeDialog">取消</el-button>
       <el-button type="primary" @click="updateSprintInfo">确定</el-button>
     </div>
   </el-dialog>
@@ -25,7 +30,8 @@ export default {
     title: String,
     startDate: String,
     endDate: String,
-    description: String
+    description: String,
+    closeDialog: Function
   },
   data: function () {
     return {
@@ -37,13 +43,18 @@ export default {
   },
   methods: {
     updateSprintInfo: function () {
-      this.$emit('updateSprintInfo',
+      this.$bus.$emit('updateSprintInfo',
         this.ID,
         this.newTitle,
         this.startDate,
         this.newEndDate,
         this.newDescription
       )
+      this.closeDialog()
+    },
+    deleteSprint: function () {
+      this.$bus.$emit('deleteSprint', this.ID)
+      this.closeDialog()
     }
   }
 }

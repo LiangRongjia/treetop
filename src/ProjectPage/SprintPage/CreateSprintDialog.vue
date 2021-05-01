@@ -3,7 +3,8 @@
     class="sprint__create-sprint-dialog"
     title="Add Meeting"
     :visible.sync="visable"
-    :modal="false">
+    :modal-append-to-body="false"
+    :show-close="false">
     <h1>标题</h1>
     <el-input v-model="title"></el-input>
     <h1>开始日期</h1>

@@ -49,7 +49,7 @@
 <script>
 
 import ListCard from './ListCard.vue'
-import SprintInfo from './SprintInfo/SprintInfo.vue'
+import SprintInfo from './SprintInfo'
 import Meetings from './Meetings.vue'
 import CreateSprintDialog from './CreateSprintDialog.vue'
 

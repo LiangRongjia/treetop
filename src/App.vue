@@ -19,12 +19,12 @@
 
 <script>
 
-import LoginPage from './LoginPage/LoginPage.vue'
-import HomeMenu from './HomeMenu.vue'
-import MyInfoPage from './MyInfo/MyInfo.vue'
-import MyJobsPage from './MyJobs/MyJobs.vue'
-import NewProjectPage from './NewProject/NewProject.vue'
-import ProjectPage from './Project/Project.vue'
+import LoginPage from './LoginPage'
+import HomeMenu from './HomeMenu'
+import MyInfoPage from './MyInfoPage'
+import MyJobsPage from './MyJobsPage'
+import NewProjectPage from './NewProjectPage'
+import ProjectPage from './ProjectPage'
 
 export default {
   name: 'App',

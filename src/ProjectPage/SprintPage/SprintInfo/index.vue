@@ -28,9 +28,7 @@
       :startDate="startDate"
       :endDate="endDate"
       :description="description"
-      @cancelEdit="edittingSprintInfo=false"
-      @deleteSprint="deleteSprint"
-      @updateSprintInfo="updateSprintInfo">
+      :closeDialog="()=>{edittingSprintInfo=false}">
     </edit-sprint-info-dialog>
   </el-card>
 </template>
@@ -62,16 +60,6 @@ export default {
   },
   mounted: function () {
     this.$bus.$on('', () => {})
-  },
-  methods: {
-    updateSprintInfo: function (ID, title, startDate, endDate, description) {
-      this.edittingSprintInfo = false
-      this.$bus.$emit('updateSprintInfo', ID, title, startDate, endDate, description)
-    },
-    deleteSprint: function (ID) {
-      this.edittingSprintInfo = false
-      this.$bus.$emit('deleteSprint', ID)
-    }
   }
 }
 </script>
