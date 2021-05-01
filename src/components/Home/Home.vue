@@ -4,18 +4,17 @@
       class="home__menu customScrollBar"
       :userID="userID"
       :userName="userName"
-      :toPage="toPage"
-      :toProject="toProject"
       :projects="projects"
     />
-    <my-info v-if="activePage==='my-info'"></my-info>
-    <my-jobs v-if="activePage==='my-jobs'"></my-jobs>
-    <new-project v-if="activePage==='new-project'"></new-project>
-    <project-page
-      v-if="activePage==='project-page'"
-      :project="projects.filter(item=>item.ID===activeProjectID)[0]"
-    >
-    </project-page>
+    <div class="home__page">
+      <my-info v-if="activePage==='my-info'"></my-info>
+      <my-jobs v-if="activePage==='my-jobs'"></my-jobs>
+      <new-project v-if="activePage==='new-project'"></new-project>
+      <project-page
+        v-if="activePage==='project-page'"
+        :project="activeProject">
+      </project-page>
+    </div>
   </div>
 </template>
 
@@ -35,6 +34,11 @@ export default {
     'new-project': NewProjectPage,
     'project-page': ProjectPage
   },
+  computed: {
+    activeProject: function () {
+      return this.projects.filter(item => item.ID === this.activeProjectID)[0] || {}
+    }
+  },
   data: function () {
     return {
       userID: this._GLOBAL.userObj.ID,
@@ -50,20 +54,38 @@ export default {
       projects: []
     }
   },
-  mounted: function () {
-    this.APIs.getProjectsByUserID().then((response) => {
-      this.projects = response.data.data.prjList
-      console.log(this.projects)
-    })
-  },
   methods: {
-    toPage: function (pageName) {
+    updateSprintInfo: function (sprintID, sprintInfo) {
+      this.projects.forEach(project => {
+        project.sprints.forEach((sprint) => {
+          if (sprint.ID === sprintID) {
+            sprint.Info = sprintInfo
+          }
+        })
+      })
+    }
+  },
+  mounted: function () {
+    // 获取全局数据
+    this.APIs.getProjectsByUserID().then(response => {
+      this.projects = response.data.data.projects || []
+    })
+    // 监听数据变更事件
+    this.$bus.$on('toPage', (pageName) => {
       this.activePage = pageName
-    },
-    toProject: function (projectID) {
+    })
+    this.$bus.$on('toProject', (projectID) => {
       this.activePage = 'project-page'
       this.activeProjectID = projectID
-    }
+    })
+    this.$bus.$on('updateSprintInfo', (sprintID, sprintInfo) => { })
+    this.$bus.$on('deleteSprint', (sprintID) => {})
+    this.$bus.$on('createSprint', (title, startDate, endDate, description) => {})
+    this.$bus.$on('', () => {})
+    this.$bus.$on('', () => {})
+    this.$bus.$on('', () => {})
+    this.$bus.$on('', () => {})
+    this.$bus.$on('', () => {})
   }
 }
 </script>
@@ -90,10 +112,11 @@ export default {
     border-right: rgba(0,0,0,0.1) solid 1px;
     overflow: auto;
   }
-  .home__main{
+  .home__page{
     grid-column-start: 6;
     grid-column-end: 25;
     grid-row-start: 1;
     grid-row-end: 2;
+    overflow: auto;
   }
 </style>

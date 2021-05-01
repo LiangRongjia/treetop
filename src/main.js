@@ -34,7 +34,7 @@ Vue.prototype._GLOBAL = {
   ProjectList: [],
   projectIndex: 0
 }
-Vue.prototype.$eventBus = new Vue({
+Vue.prototype.$bus = new Vue({
   el: '#app',
   components: { App },
   template: '<App/>'
