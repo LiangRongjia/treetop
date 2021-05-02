@@ -45,6 +45,20 @@ export const getProjectsByUserID = (userID) => {
           projects: [{
             name: '项目1',
             ID: 1,
+            hostID: 2,
+            members: [{
+              ID: 0,
+              name: 'reghr',
+              avatar: 'ghrhne'
+            }, {
+              ID: 1,
+              name: 'ghn',
+              avatar: 'ghgshrymryrhne'
+            }, {
+              ID: 2,
+              name: 'thwhr',
+              avatar: 'yjmuyu'
+            }],
             sprints: [
               { ID: 2, title: 'sprint1', description: 'greht', startDate: 'f', endDate: 'f' },
               { ID: 3, title: 'sprint2', description: 'gahsr', startDate: 'f', endDate: 'f' }
@@ -59,12 +73,24 @@ export const getProjectsByUserID = (userID) => {
           }, {
             name: '项目2',
             ID: 2,
+            hostID: 2,
+            members: [{
+              ID: 0,
+              name: 'reghr',
+              avatar: 'ghrhne'
+            }, {
+              ID: 1,
+              name: 'ghn',
+              avatar: 'ghgshrymryrhne'
+            }, {
+              ID: 2,
+              name: 'thwhr',
+              avatar: 'yjmuyu'
+            }],
             startDate: '4325436',
             endDate: '34254',
             description: '543gthyej36',
             status: 'frgwhry',
-            hostName: 'liangrongjia',
-            hostID: 2,
             sprints: [{
               ID: 2,
               projectID: 2,

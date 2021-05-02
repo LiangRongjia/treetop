@@ -7,17 +7,19 @@
       </div>
     </div>
     <el-menu
-      ref="home-menu"
       class="menu"
+      background-color="#f7f7f7"
       default-active="my-jobs"
       :default-openeds="['my-projects']">
-      <el-menu-item index="my-info" @click="$bus.$emit('toPage','my-info-page')">
+      <el-menu-item index="my-info" @click="toPage('my-info-page')">
         <span>我的资料</span>
       </el-menu-item>
-      <el-menu-item index="my-jobs" @click="$bus.$emit('toPage','my-jobs-page')">
+      <el-menu-item index="my-jobs" @click="toPage('my-jobs-page')">
         <span>我的工作</span>
       </el-menu-item>
-      <el-submenu ref="project-menu" index="my-projects">
+      <el-submenu
+        ref="project-menu"
+        index="my-projects">
         <template slot="title">
           <span>我的项目</span>
         </template>
@@ -25,14 +27,14 @@
           v-for="item in projects"
           :index="`project${item.ID}`"
           :key="item.ID"
-          @click="$bus.$emit('toProject', item.ID)">
+          @click="toProject(item.ID)">
           {{item.name}}
         </el-menu-item>
       </el-submenu>
       <el-menu-item
         :index="'new-project'"
         :key="'new-project'"
-        @click="$bus.$emit('toPage', 'new-project-page')">
+        @click="toPage('new-project-page')">
         + 创建项目
       </el-menu-item>
     </el-menu>
@@ -40,31 +42,17 @@
 </template>
 
 <script>
+
 export default {
   name: 'HomeMenu',
   props: {
     user: Object,
-    projects: Array
-  },
-  data: function () {
-    return {
-
-    }
-  },
-  created: function () {
-    this.acceptList()
-  },
-  mounted: function () {
-    // setInterval(() => console.log(this.projects), 1000)
-  },
-  methods: {
-    acceptList: function () {
-      this.$bus.$on('add', (message) => {
-        this.projectsList = this._GLOBAL.ProjectList
-      })
-    }
+    projects: Array,
+    toPage: Function,
+    toProject: Function
   }
 }
+
 </script>
 
 <style scoped>
@@ -83,7 +71,7 @@ export default {
     margin-left: 24px;
   }
 
-  .menu {
+  .menu{
     border: none;
   }
 </style>

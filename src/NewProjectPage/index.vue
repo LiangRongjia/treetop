@@ -75,12 +75,20 @@ export default {
       this.ruleForm = JSON.parse(JSON.stringify(defaultRuleForm))
     },
     newProject: function () {
+      const resolve = () => {
+        this.$message({ message: '创建新项目成功！', type: 'success' })
+        this.resetForm()
+      }
+      const reject = () => {
+        this.$message({ message: '创建新项目失败！', type: 'error' })
+      }
       this.$bus.$emit('newProject',
         this.ruleForm.name,
         this.ruleForm.dates[0],
         this.ruleForm.dates[1],
         this.ruleForm.description,
-        () => { this.resetForm() }
+        resolve,
+        reject
       )
     }
   }

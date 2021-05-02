@@ -8,7 +8,9 @@
       v-if="loggedIn"
       class="home__menu customScrollBar"
       :user="user"
-      :projects="projects">
+      :projects="projects"
+      :toPage="(pageName)=>{this.activePage=pageName}"
+      :toProject="(projectID)=>{this.activeProjectID=projectID,this.activePage='project-page'}">
     </home-menu>
     <div class="home__page" v-if="loggedIn">
       <my-info-page
@@ -88,7 +90,7 @@ export default {
     }
   },
   mounted: function () {
-    // 等待 Vue 挂载
+    // 等待 Vue 挂载，并指添加一次监听
     setTimeout(() => {
       // 监听数据变更事件
       this.$bus.$on('toPage', (pageName) => {
@@ -101,8 +103,7 @@ export default {
       this.$bus.$on('updateSprintInfo', (sprintID, sprintInfo) => { })
       this.$bus.$on('deleteSprint', (sprintID) => {})
       this.$bus.$on('createSprint', (title, startDate, endDate, description) => {})
-      this.$bus.$on('newProject', (name, startDate, endDate, description, resolve) => {
-        this.$message({ message: '创建新项目成功！', type: 'success' })
+      this.$bus.$on('newProject', (name, startDate, endDate, description, resolve, reject) => {
         resolve()
       })
       this.$bus.$on('', () => {})
@@ -123,6 +124,7 @@ export default {
   position: fixed;
   height: 100%;
   width: 100%;
+  background-color: #f7f7f7;
 }
 *{
   margin: 0px;

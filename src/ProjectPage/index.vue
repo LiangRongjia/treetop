@@ -23,7 +23,10 @@
         <defect-page :project="project"></defect-page>
       </el-tab-pane>
       <el-tab-pane label="团队" name="team">
-        <team-page :project="project" :list="list"></team-page>
+        <team-page
+          :members="members"
+          :projectID="project.ID">
+        </team-page>
       </el-tab-pane>
       <el-tab-pane label="会议" name="meetings">
         <meetings-page :meetings="meetings"></meetings-page>
@@ -56,6 +59,9 @@ export default {
     project: Object
   },
   computed: {
+    members: function () {
+      return this.project.members || []
+    },
     sprints: function () {
       return this.project.sprints || []
     },
@@ -70,24 +76,6 @@ export default {
     },
     meetings: function () {
       return this.project.meetings || []
-    }
-  },
-  data: function () {
-    return {
-      list: []
-    }
-  },
-  methods: {
-    show: function () {
-      this.axios.get('http://39.97.175.119:8801/project/getMemberListByPID', {
-        params: {
-          ID: this._GLOBAL.ProjectList[this._GLOBAL.projectIndex].ID
-        }
-      }).then((response) => {
-        if (response.data.message === '成功') {
-          this.list = response.data.data.memberList
-        }
-      })
     }
   }
 }
