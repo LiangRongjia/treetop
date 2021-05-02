@@ -2,38 +2,37 @@
   <aside>
     <div class="user-info">
       <div>
-        <el-avatar :src="avatarURL"></el-avatar>
-        <p class="user-info__name">{{userName}}</p>
+        <el-avatar :src="user.avatar"></el-avatar>
+        <p class="user-info__name">{{user.name}}</p>
       </div>
     </div>
     <el-menu
       ref="home-menu"
       class="menu"
       default-active="my-jobs"
-      :default-openeds="['myJob', 'myProjects']"
-    >
-      <el-menu-item index="my-info" @click="$bus.$emit('toPage','my-info')">
+      :default-openeds="['my-projects']">
+      <el-menu-item index="my-info" @click="$bus.$emit('toPage','my-info-page')">
         <span>我的资料</span>
       </el-menu-item>
-      <el-menu-item index="my-jobs" @click="$bus.$emit('toPage','my-jobs')">
+      <el-menu-item index="my-jobs" @click="$bus.$emit('toPage','my-jobs-page')">
         <span>我的工作</span>
       </el-menu-item>
-      <el-submenu ref="project-menu" index="myProjects">
+      <el-submenu ref="project-menu" index="my-projects">
         <template slot="title">
           <span>我的项目</span>
         </template>
         <el-menu-item
-          v-for="(item, index) in projects"
-          :index="index.toString()"
-          @click="$bus.$emit('toProject', item.ID)"
-          :key="item.ID">
+          v-for="item in projects"
+          :index="`project${item.ID}`"
+          :key="item.ID"
+          @click="$bus.$emit('toProject', item.ID)">
           {{item.name}}
         </el-menu-item>
       </el-submenu>
       <el-menu-item
-        :index="'newProject'"
-        @click="$bus.$emit('toPage', 'new-project')"
-        :key="'new-project'">
+        :index="'new-project'"
+        :key="'new-project'"
+        @click="$bus.$emit('toPage', 'new-project-page')">
         + 创建项目
       </el-menu-item>
     </el-menu>
@@ -43,14 +42,13 @@
 <script>
 export default {
   name: 'HomeMenu',
-  props: [
-    'userID',
-    'userName',
-    'projects'
-  ],
+  props: {
+    user: Object,
+    projects: Array
+  },
   data: function () {
     return {
-      avatarURL: this._GLOBAL.imgBaseUrl + this._GLOBAL.userObj.avatar
+
     }
   },
   created: function () {

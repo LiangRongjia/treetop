@@ -4,14 +4,16 @@
     <home-menu
       v-if="loggedIn"
       class="home__menu customScrollBar"
-      :userID="userID"
-      :userName="userName"
+      :user="user"
       :projects="projects">
     </home-menu>
     <div class="home__page" v-if="loggedIn">
-      <my-info-page v-if="activePage==='my-info'"></my-info-page>
-      <my-jobs-page v-if="activePage==='my-jobs'"></my-jobs-page>
-      <new-project-page v-if="activePage==='new-project'"></new-project-page>
+      <my-info-page
+        v-if="activePage==='my-info-page'"
+        :user="user">
+      </my-info-page>
+      <my-jobs-page v-if="activePage==='my-jobs-page'"></my-jobs-page>
+      <new-project-page v-if="activePage==='new-project-page'"></new-project-page>
       <project-page v-if="activePage==='project-page'" :project="activeProject"></project-page>
     </div>
   </div>
@@ -25,6 +27,8 @@ import MyInfoPage from './MyInfoPage'
 import MyJobsPage from './MyJobsPage'
 import NewProjectPage from './NewProjectPage'
 import ProjectPage from './ProjectPage'
+
+const pages = [ 'my-info-page', 'my-jobs-page', 'new-project-page', 'project-page' ]
 
 export default {
   name: 'App',
@@ -43,13 +47,16 @@ export default {
   },
   data: function () {
     return {
+      pages,
       // 视图控制
       loggedIn: false,
-      pages: [ 'my-info', 'my-jobs', 'new-project', 'project-page' ],
-      activePage: 'my-jobs',
+      activePage: 'my-jobs-page',
       // 数据
-      userID: 0,
-      userName: 'liangrongjia',
+      user: {
+        ID: 0,
+        name: 'liangrongjia',
+        avatar: '/'
+      },
       password: '',
       projects: [],
       activeProjectID: -1
@@ -67,7 +74,7 @@ export default {
     }
   },
   mounted: function () {
-    // 等待事件总线挂载及注册
+    // 等待 Vue 挂载
     setTimeout(() => {
       // 监听数据变更事件
       this.$bus.$on('toPage', (pageName) => {
