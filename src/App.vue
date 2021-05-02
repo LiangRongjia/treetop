@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <login-page v-if="!loggedIn" @login="login"></login-page>
+    <login-page
+      v-if="!loggedIn"
+      @login="login">
+    </login-page>
     <home-menu
       v-if="loggedIn"
       class="home__menu customScrollBar"
@@ -15,9 +18,16 @@
       <my-jobs-page
         v-if="activePage==='my-jobs-page'"
         :userID="user.ID"
-        :projects="projects"></my-jobs-page>
-      <new-project-page v-if="activePage==='new-project-page'"></new-project-page>
-      <project-page v-if="activePage==='project-page'" :project="activeProject"></project-page>
+        :projects="projects">
+      </my-jobs-page>
+      <new-project-page
+        v-if="activePage==='new-project-page'"
+        :userID="user.ID">
+      </new-project-page>
+      <project-page
+        v-if="activePage==='project-page'"
+        :project="activeProject">
+      </project-page>
     </div>
   </div>
 </template>
@@ -91,7 +101,10 @@ export default {
       this.$bus.$on('updateSprintInfo', (sprintID, sprintInfo) => { })
       this.$bus.$on('deleteSprint', (sprintID) => {})
       this.$bus.$on('createSprint', (title, startDate, endDate, description) => {})
-      this.$bus.$on('', () => {})
+      this.$bus.$on('newProject', (name, startDate, endDate, description, resolve) => {
+        this.$message({ message: '创建新项目成功！', type: 'success' })
+        resolve()
+      })
       this.$bus.$on('', () => {})
       this.$bus.$on('', () => {})
       this.$bus.$on('', () => {})
