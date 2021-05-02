@@ -28,7 +28,7 @@
       class="sprint__card"
       title="需求"
       :data="activeRequirements"
-      :fields="requiresFields"/>
+      :fields="requirementsFields"/>
     <list-card
       class="sprint__card"
       title="任务"
@@ -53,7 +53,7 @@ import SprintInfo from './SprintInfo'
 import Meetings from './Meetings.vue'
 import CreateSprintDialog from './CreateSprintDialog.vue'
 
-const requiresFields = [
+const requirementsFields = [
   { label: '标题', prop: 'title' },
   { label: '类型', prop: 'type' },
   { label: '优先级', prop: 'priority' },
@@ -95,7 +95,7 @@ export default {
   },
   props: {
     sprints: Array,
-    requires: Array,
+    requirements: Array,
     tasks: Array,
     defects: Array,
     meetings: Array
@@ -105,7 +105,7 @@ export default {
       return this.sprints.filter(sprint => sprint.index === this.activeSprintIndex)[0] || {}
     },
     activeRequirements: function () {
-      return this.requires.filter(item => item.sprintID === this.activeSprint.ID)
+      return this.requirements.filter(item => item.sprintID === this.activeSprint.ID)
     },
     activeTasks: function () {
       return this.tasks.filter(item => item.sprintID === this.activeSprint.ID)
@@ -119,7 +119,7 @@ export default {
   },
   data: function () {
     return {
-      requiresFields,
+      requirementsFields,
       tasksFields,
       defectsFields,
       meetingsFields,

@@ -4,41 +4,25 @@
       <span>{{title}}</span>
     </div>
     <div class="content">
-      <el-card class="list" shadow="never">
-        <el-table :data="data" stripe class="table">
-          <el-table-column v-for="(item, index) in fields" :key="index" :prop="item" :label="item"></el-table-column>
-        </el-table>
-      </el-card>
+      <el-table :data="data" stripe class="table">
+        <el-table-column
+          v-for="item in fields"
+          :key="item.prop"
+          :prop="item.prop"
+          :label="item.label">
+        </el-table-column>
+      </el-table>
     </div>
   </el-card>
 </template>
 
 <script>
-/*
- * title: "Title",
- * addMethod: AFunction
- * data: {
- *  field1: value,
- *  field2: value,
- *  ...
- * },
- * fields: [
- *  'field1',
- *  'field2',
- *  ...
- * ]
- */
+
 export default {
-  name: 'ListCard',
-  props: [
-    'title',
-    'data',
-    'fields'
-  ],
-  methods: {
-    add () {
-      this.$emit('add')
-    }
+  props: {
+    title: String,
+    data: Array,
+    fields: Array
   }
 }
 </script>
@@ -67,8 +51,5 @@ export default {
 .table{
   max-height: 360px;
   overflow: auto;
-}
-.table *{
-  width: max-content;
 }
 </style>

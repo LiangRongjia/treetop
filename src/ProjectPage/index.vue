@@ -7,14 +7,14 @@
       <el-tab-pane label="迭代" name="sprint">
         <sprint-page
           :sprints="sprints"
-          :requires="requires"
+          :requirements="requirements"
           :tasks="tasks"
           :defects="defects"
           :meetings="meetings">
         </sprint-page>
       </el-tab-pane>
-      <el-tab-pane label="需求" name="require">
-        <require-page :project="project"></require-page>
+      <el-tab-pane label="需求" name="requirement">
+        <requirement-page :project="project"></requirement-page>
       </el-tab-pane>
       <el-tab-pane label="进度" name="progress">
         <progress-page :project="project"></progress-page>
@@ -34,7 +34,7 @@
 
 <script>
 
-import RequirePage from './RequirePage'
+import RequirementPage from './RequirePage'
 import SprintPage from './SprintPage'
 import ProgressPage from './ProgressPage'
 import DefectPage from './DefectPage'
@@ -46,7 +46,7 @@ export default {
   components: {
     'basic-page': BasicPage,
     'sprint-page': SprintPage,
-    'require-page': RequirePage,
+    'requirement-page': RequirementPage,
     'progress-page': ProgressPage,
     'defect-page': DefectPage,
     'team-page': TeamPage,
@@ -59,8 +59,8 @@ export default {
     sprints: function () {
       return this.project.sprints || []
     },
-    requires: function () {
-      return this.project.requires || []
+    requirements: function () {
+      return this.project.requirements || []
     },
     tasks: function () {
       return this.project.tasks || []

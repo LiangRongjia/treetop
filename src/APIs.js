@@ -49,7 +49,7 @@ export const getProjectsByUserID = (userID) => {
               { ID: 2, title: 'sprint1', description: 'greht', startDate: 'f', endDate: 'f' },
               { ID: 3, title: 'sprint2', description: 'gahsr', startDate: 'f', endDate: 'f' }
             ],
-            requires: [{ title: '', type: '', kind: '', priority: '', description: '', endDate: '', stitle: '', state: '' }],
+            requirements: [{ title: '', type: '', kind: '', priority: '', description: '', endDate: '', stitle: '', state: '' }],
             tasks: [{ title: '', state: '', username: '', startDate: '', endDate: '', priority: '', description: '' }],
             defects: [{ title: '', type: '', state: '', endDate: '', description: '' }],
             meetings: [
@@ -70,6 +70,7 @@ export const getProjectsByUserID = (userID) => {
               projectID: 2,
               index: 0, // 项目内的次序
               status: '已完成',
+              hostID: 1,
               title: 'sprint1',
               description: 'greht',
               startDate: 'fff',
@@ -79,15 +80,17 @@ export const getProjectsByUserID = (userID) => {
               projectID: 2,
               index: 1, // 项目内的次序
               status: '进行中',
+              hostID: 1,
               title: 'sprint2',
               description: 'gahsr',
               startDate: 'f',
               endDate: 'f'
             }],
-            requires: [{
+            requirements: [{
               ID: 1,
               title: '标题',
               type: '类型',
+              hostID: 1,
               priority: '优先级',
               description: '描述',
               endDate: '截止日期',
@@ -101,7 +104,6 @@ export const getProjectsByUserID = (userID) => {
               sprintID: 2,
               projectID: 2,
               state: '进行中',
-              hostName: 'liangorngjia',
               hostID: 1,
               startDate: '2020',
               endDate: '2020',
@@ -113,6 +115,7 @@ export const getProjectsByUserID = (userID) => {
               title: '标题',
               sprintID: 2,
               projectID: 2,
+              hostID: 1,
               type: '类型',
               state: '状态',
               endDate: '2021',

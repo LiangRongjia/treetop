@@ -12,7 +12,10 @@
         v-if="activePage==='my-info-page'"
         :user="user">
       </my-info-page>
-      <my-jobs-page v-if="activePage==='my-jobs-page'"></my-jobs-page>
+      <my-jobs-page
+        v-if="activePage==='my-jobs-page'"
+        :userID="user.ID"
+        :projects="projects"></my-jobs-page>
       <new-project-page v-if="activePage==='new-project-page'"></new-project-page>
       <project-page v-if="activePage==='project-page'" :project="activeProject"></project-page>
     </div>
@@ -31,7 +34,6 @@ import ProjectPage from './ProjectPage'
 const pages = [ 'my-info-page', 'my-jobs-page', 'new-project-page', 'project-page' ]
 
 export default {
-  name: 'App',
   components: {
     'login-page': LoginPage,
     'home-menu': HomeMenu,
@@ -70,6 +72,8 @@ export default {
         // 获取数据
         const projResp = await this.APIs.getProjectsByUserID()
         this.projects = projResp.data.data.projects || []
+        this.user.ID = 1
+        this.user.name = 'liangrongjia'
       }
     }
   },
